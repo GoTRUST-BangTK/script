@@ -5,7 +5,6 @@ $packages = @("python", "gnupg", "git")
 # $repo_url = 'http://gitea.local/kimbang/script.git'
 $repo_url = "https://github.com/GoTRUST-BangTK/script.git"
 $private_key_path = 'secret\private_key.asc'
-$script_file_path= 'install_apps_client.py' 
 $script_file_path_gpg= 'install_apps_client.py.gpg' 
 $config_file_path_gpg= 'config.py.gpg' 
 $python_requirement_path = 'requirements.txt'
@@ -86,15 +85,15 @@ function Run-Script {
     }
 
     gpg --import $private_key_path
-    gpg --decrypt $script_file_path_gpg  > $script_file_path
-    (Get-Content $script_file_path) | Set-Content -Encoding utf8 $script_file_path
+    gpg --decrypt $script_file_path_gpg  > install_apps_client.py
+    (Get-Content install_apps_client.py) | Set-Content -Encoding utf8 install_apps_client.py
 
     gpg --decrypt $config_file_path_gpg  > config.py
     (Get-Content config.py) | Set-Content -Encoding utf8 config.py
 
     Write-Host "Pip installing requirements"
     pip install -r $python_requirement_path
-    python $script_file_path 
+    python install_apps_client.py 
 }
 
 function Disable-Window-Update {
