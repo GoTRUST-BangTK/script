@@ -83,7 +83,7 @@ function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
         Write-Host "Current working directory: $(Get-Location)"
-        $output = git pull 
+        git pull 
     } else {
         git clone $repo_url
         Set-Location $setup_path
@@ -91,12 +91,7 @@ function Run-Script {
 
     gpg --import $private_key_path
     Write-Output "Decrypt python script."
-
-    # gpg --decrypt $script_file_path_gpg  > install_apps_client.py
-    # (Get-Content install_apps_client.py) | Set-Content -Encoding utf8 install_apps_client.py
-
-    # gpg --decrypt $config_file_path_gpg  > config.py
-    # (Get-Content config.py) | Set-Content -Encoding utf8 config.py
+ 
     Write-Host "Decrypt to $HOME\$setup_path"
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
@@ -161,5 +156,5 @@ Install-Choco
 Install-ChocoPackages
 Run-Script
 Disable-Window-Update
-# Clean
+Clean
 
