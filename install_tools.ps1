@@ -105,6 +105,7 @@ function Run-Script {
     pip install -r $python_requirement_path
 
     Write-Output "Run python script."
+    $env:PYTHONDONTWRITEBYTECODE=1
     python install_apps_client.py 
     python python_service.py --startup=auto install
     python python_service.py start
