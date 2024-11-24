@@ -93,9 +93,9 @@ function Run-Script {
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
-        gpg --decrypt $script_file_path_gpg > "$folderPath\$outputFileName.py"
-        (Get-Content "$folderPath\$outputFileName.py") | Set-Content -Encoding utf8 "$folderPath\$outputFileName.py"
-        Write-Host "Decrypted file: $script_file_path_gpg to $outputFileName.py"
+        gpg --decrypt $script_file_path_gpg > "$folderPath\$outputFileName"
+        (Get-Content "$folderPath\$outputFileName") | Set-Content -Encoding utf8 "$folderPath\$outputFileName"
+        Write-Host "Decrypted file: $script_file_path_gpg to $outputFileName"
     }
 
     Write-Host "Pip installing requirements"
