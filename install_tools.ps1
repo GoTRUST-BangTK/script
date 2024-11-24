@@ -39,7 +39,7 @@ if (Test-Path "HKLM:\SOFTWARE\MediPay") {
     Write-Host "This machine is not setup yet."
 } 
 
-If(! Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade") {
+If(-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
     Write-Host "Create HKLM:SOFTWARE\AutoUpgrade Registry"
     New-Item -Path "HKLM:SOFTWARE\AutoUpgrade" -Force
 }
