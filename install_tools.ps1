@@ -90,7 +90,7 @@ function Run-Script {
 
     # gpg --decrypt $config_file_path_gpg  > config.py
     # (Get-Content config.py) | Set-Content -Encoding utf8 config.py
-    Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
+    Get-ChildItem -Path $PWD -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
         gpg --decrypt $script_file_path_gpg > "$outputFileName"
