@@ -93,8 +93,8 @@ function Run-Script {
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
-        gpg --decrypt $script_file_path_gpg > "$folderPath\$outputFileName"
-        (Get-Content "$folderPath\$outputFileName") | Set-Content -Encoding utf8 "$folderPath\$outputFileName"
+        gpg --decrypt $script_file_path_gpg > "$outputFileName"
+        (Get-Content "$outputFileName") | Set-Content -Encoding utf8 "$outputFileName"
         Write-Host "Decrypted file: $script_file_path_gpg to $outputFileName"
     }
 
