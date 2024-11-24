@@ -13,7 +13,6 @@ $setup_path = 'script'
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
 
-New-Item -Path "HKLM:SOFTWARE\AutoUpgrade" -Force
 
 
 Write-Host "Check if the kiosk is already set up."
@@ -39,6 +38,11 @@ if (Test-Path "HKLM:\SOFTWARE\MediPay") {
 } else {
     Write-Host "This machine is not setup yet."
 } 
+
+If(! Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade") {
+    Write-Host "Create HKLM:SOFTWARE\AutoUpgrade Registry"
+    New-Item -Path "HKLM:SOFTWARE\AutoUpgrade" -Force
+}
 
 function Install-Choco{ 
     if (Get-Command choco -ErrorAction SilentlyContinue) {
