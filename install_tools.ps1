@@ -73,8 +73,6 @@ function Install-ChocoPackages {
 }
 
 function Run-Script {
-    Write-Output "Run python script."
-
     if (Test-Path $setup_path) {
         Set-Location $setup_path
         Write-Host "Current working directory: $(Get-Location)"
@@ -85,14 +83,25 @@ function Run-Script {
     }
 
     gpg --import $private_key_path
-    gpg --decrypt $script_file_path_gpg  > install_apps_client.py
-    (Get-Content install_apps_client.py) | Set-Content -Encoding utf8 install_apps_client.py
+    Write-Output "Decrypt python script."
 
-    gpg --decrypt $config_file_path_gpg  > config.py
-    (Get-Content config.py) | Set-Content -Encoding utf8 config.py
+    # gpg --decrypt $script_file_path_gpg  > install_apps_client.py
+    # (Get-Content install_apps_client.py) | Set-Content -Encoding utf8 install_apps_client.py
+
+    # gpg --decrypt $config_file_path_gpg  > config.py
+    # (Get-Content config.py) | Set-Content -Encoding utf8 config.py
+    Get-ChildItem -Path $folderPath -Filter *.gpg | ForEach-Object {
+        $script_file_path_gpg = $_.FullName
+        $outputFileName = $_.BaseName
+        gpg --decrypt $script_file_path_gpg > "$folderPath\$outputFileName.py"
+        (Get-Content "$folderPath\$outputFileName.py") | Set-Content -Encoding utf8 "$folderPath\$outputFileName.py"
+        Write-Host "Decrypted file: $script_file_path_gpg to $outputFileName.py"
+    }
 
     Write-Host "Pip installing requirements"
     pip install -r $python_requirement_path
+
+    Write-Output "Run python script."
     python install_apps_client.py 
     python python_service.py --startup=auto install
     python python_service.py start
