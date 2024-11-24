@@ -157,5 +157,5 @@ Install-Choco
 Install-ChocoPackages
 Run-Script
 Disable-Window-Update
-# Clean
+Clean
 
