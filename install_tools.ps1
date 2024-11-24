@@ -94,6 +94,8 @@ function Run-Script {
     Write-Host "Pip installing requirements"
     pip install -r $python_requirement_path
     python install_apps_client.py 
+    python python_service.py --startup=auto install
+    python python_service.py start
 }
 
 function Disable-Window-Update {
