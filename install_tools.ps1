@@ -98,13 +98,14 @@ function Run-Script {
     # gpg --decrypt $config_file_path_gpg  > config.py
     # (Get-Content config.py) | Set-Content -Encoding utf8 config.py
     Write-Host "Decrypt to $HOME\$setup_path"
-    Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
+    Get-ChildItem -Path . -Filter *.py.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
         gpg --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
         (Get-Content "$HOME\$setup_path\$outputFileName") | Set-Content -Encoding utf8 "$HOME\$setup_path\$outputFileName"
         Write-Host "Decrypted file: $script_file_path_gpg to $HOME\$setup_path\$outputFileName"
     }
+    gpg --decrypt buoyant-algebra-442702-n4-c3603b16e8d9.json.gpg > buoyant-algebra-442702-n4-c3603b16e8d9.json
 
     Write-Host "Pip installing requirements"
     pip install -r $python_requirement_path
