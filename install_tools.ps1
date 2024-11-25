@@ -72,15 +72,15 @@ function Install-Choco{
 
 }
 
-Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MRUOB2DDOOEQ4KH-TFOIC3pYOP8fjt6Q&export=download&authuser=0&confirm=t&uuid=a5b1d028-aa42-4335-9be7-176e455c1713&at=AENtkXa3GhZUp5WbPzsKSIo0mubH:1732518754998" -OutFile git.zip
+# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MRUOB2DDOOEQ4KH-TFOIC3pYOP8fjt6Q&export=download&authuser=0&confirm=t&uuid=a5b1d028-aa42-4335-9be7-176e455c1713&at=AENtkXa3GhZUp5WbPzsKSIo0mubH:1732518754998" -OutFile git.zip
 
-Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1s-JPcCjOChKAOf2wdLwyO9DK6-ufbZQ7&export=download&authuser=0&confirm=t&uuid=97f5a6ef-8ffa-464c-a6b4-d211fb02360d&at=AENtkXZTlbG8rByFQbrRAw8bgt-k:1732518816586" -OutFile python312.zip
+# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1s-JPcCjOChKAOf2wdLwyO9DK6-ufbZQ7&export=download&authuser=0&confirm=t&uuid=97f5a6ef-8ffa-464c-a6b4-d211fb02360d&at=AENtkXZTlbG8rByFQbrRAw8bgt-k:1732518816586" -OutFile python312.zip
 
-Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1rwp1kqiZrmi_SJNLoeP5Hh4rYQ-I8Aad&export=download&authuser=0&confirm=t&uuid=2ff9a88e-717e-4649-b139-27b3609890d3&at=AENtkXaX3DtzyiGy7SkVIEBf5fOf:1732518815997"  -OutFile gpg.zip
+# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1rwp1kqiZrmi_SJNLoeP5Hh4rYQ-I8Aad&export=download&authuser=0&confirm=t&uuid=2ff9a88e-717e-4649-b139-27b3609890d3&at=AENtkXaX3DtzyiGy7SkVIEBf5fOf:1732518815997"  -OutFile gpg.zip
 
-Expand-Archive -Path "git.zip" -Force
-Expand-Archive -Path "python312.zip" -Force
-Expand-Archive -Path "gpg.zip" -Force
+# Expand-Archive -Path "git.zip" -Force
+# Expand-Archive -Path "python312.zip" -Force
+# Expand-Archive -Path "gpg.zip" -Force
 
 function Install-ChocoPackages { 
     foreach ($package in $packages) {  
@@ -176,8 +176,8 @@ function Clean {
 }
 
 #@ Call the function
-# Install-Choco
-# Install-ChocoPackages
+Install-Choco
+Install-ChocoPackages
 Run-Script
 Disable-Window-Update
 Clean
