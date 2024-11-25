@@ -52,9 +52,9 @@ function Install-Choco{
         Write-Host "Chocolatey is not installed. Installing now..." -ForegroundColor Yellow
         Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
        
-        Write-Host "Install VC Redist"
-        Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MUMMO0v47kfwzzI0FgmmPRydutM5xM0p&export=download&authuser=0&confirm=t&uuid=c65a4b72-59c0-440d-86ad-c05e3e9492ca&at=AENtkXakLOfUJFyhaE-2FcjoYCey:1732507094485" -OutFile VC_redist.x86.exe
-        .\VC_redist.x86.exe
+        # Write-Host "Install VC Redist"
+        # Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MUMMO0v47kfwzzI0FgmmPRydutM5xM0p&export=download&authuser=0&confirm=t&uuid=c65a4b72-59c0-440d-86ad-c05e3e9492ca&at=AENtkXakLOfUJFyhaE-2FcjoYCey:1732507094485" -OutFile VC_redist.x86.exe
+        # .\VC_redist.x86.exe
 
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
