@@ -48,15 +48,20 @@ function Install-Choco{
     if (Get-Command choco -ErrorAction SilentlyContinue) {
         Write-Host "Chocolatey is already installed." -ForegroundColor Green
     }else { 
+        Set-ExecutionPolicy Bypass -Scope Process -Force;
         Write-Host "Chocolatey is not installed. Installing now..." -ForegroundColor Yellow
         Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
-        Set-ExecutionPolicy Bypass -Scope Process -Force;
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
-        # Refresh environment variables (required after installing Chocolatey)
-        $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
-       
+        # [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+        # Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
+    #    $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
+
+       Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1PsXpF-23svHG3tLsOJvFd6ctL3m_seX0&export=download&authuser=0&confirm=t&uuid=077940ad-b482-4254-a0f6-ceacfd5005e1&at=AENtkXZ3IrP1ZXzSzasP2ghyfx_p:1732505231164" -OutFile chocolatey.zip
+       Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
+       $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
+    #    $env:Path += ";C:\ProgramData\chocolatey\bin"
+       RefreshEnv
     }
+
 }
 
 function Install-ChocoPackages { 
