@@ -9,7 +9,7 @@ $script_file_path_gpg= 'install_apps_client.py.gpg'
 $config_file_path_gpg= 'config.py.gpg' 
 $python_requirement_path = 'requirements.txt'
 $setup_path = 'script'
-
+$HOME = 'C:\Windows\System32'
 # $python = '.\python312\Python312\python.exe'
 # $gpg = '.\gpg\gnupg\bin\gpg.exe'
 # $git = '\git\Git\bin\git.exe'
@@ -54,20 +54,11 @@ function Install-Choco{
         Set-ExecutionPolicy Bypass -Scope Process -Force;
         Write-Host "Chocolatey is not installed. Installing now..." -ForegroundColor Yellow
         Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
-       
-        # Write-Host "Install VC Redist"
-        # Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MUMMO0v47kfwzzI0FgmmPRydutM5xM0p&export=download&authuser=0&confirm=t&uuid=c65a4b72-59c0-440d-86ad-c05e3e9492ca&at=AENtkXakLOfUJFyhaE-2FcjoYCey:1732507094485" -OutFile VC_redist.x86.exe
-        # .\VC_redist.x86.exe
-
+        
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
        $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
         choco upgrade chocolatey --version=1.4.0 -y --force
-    
-    #    Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1PsXpF-23svHG3tLsOJvFd6ctL3m_seX0&export=download&authuser=0&confirm=t&uuid=077940ad-b482-4254-a0f6-ceacfd5005e1&at=AENtkXZ3IrP1ZXzSzasP2ghyfx_p:1732505231164" -OutFile chocolatey.zip
-    #    Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
-    #    $env:Path += ";C:\ProgramData\chocolatey\bin"
-    #    RefreshEnv
     }
 
 }
