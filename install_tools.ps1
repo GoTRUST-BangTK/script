@@ -106,20 +106,20 @@ function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
         Write-Host "Current working directory: $(Get-Location)"
-        '.\git\Git\bin\git.exe' pull 
+        .\git\Git\bin\git.exe pull 
     } else {
-        '.\git\Git\bin\git.exe' clone $repo_url
+        .\git\Git\bin\git.exe clone $repo_url
         Set-Location $setup_path
     }
 
-    gpg --import $private_key_path
+    .\gpg\gnupg\bin\gpg.exe --import $private_key_path
     Write-Output "Decrypt python script."
  `
     Write-Host "Decrypt to $HOME\$setup_path"
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
-        '.\gpg\gnupg\bin\gpg.exe' --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
+        .\gpg\gnupg\bin\gpg.exe --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
         (Get-Content "$HOME\$setup_path\$outputFileName") | Set-Content -Encoding utf8 "$HOME\$setup_path\$outputFileName"
         Write-Host "Decrypted file: $script_file_path_gpg to $HOME\$setup_path\$outputFileName"
     }
@@ -129,9 +129,9 @@ function Run-Script {
 
     Write-Output "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
-    '.\python312\Python312\python.exe' install_apps_client.py 
-    '.\python312\Python312\python.exe' python_service.py --startup=auto install
-    '.\python312\Python312\python.exe' python_service.py start
+    .\python312\Python312\python.exe install_apps_client.py 
+    .\python312\Python312\python.exe python_service.py --startup=auto install
+    .\python312\Python312\python.exe python_service.py start
 }
 
 function Disable-Window-Update {
