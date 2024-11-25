@@ -10,9 +10,12 @@ $config_file_path_gpg= 'config.py.gpg'
 $python_requirement_path = 'requirements.txt'
 $setup_path = 'script'
 
+$python = '.\python312\Python312\python.exe'
+$gpg = '.\gpg\gnupg\bin\gpg.exe'
+$git = '.\git\Git\bin\git.exe'
+
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
-
 
 
 Write-Host "Check if the kiosk is already set up."
@@ -60,6 +63,7 @@ function Install-Choco{
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
        $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
         choco upgrade chocolatey --version=1.4.0 -y --force
+    
     #    Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1PsXpF-23svHG3tLsOJvFd6ctL3m_seX0&export=download&authuser=0&confirm=t&uuid=077940ad-b482-4254-a0f6-ceacfd5005e1&at=AENtkXZ3IrP1ZXzSzasP2ghyfx_p:1732505231164" -OutFile chocolatey.zip
     #    Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
     #    $env:Path += ";C:\ProgramData\chocolatey\bin"
@@ -67,6 +71,16 @@ function Install-Choco{
     }
 
 }
+
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MRUOB2DDOOEQ4KH-TFOIC3pYOP8fjt6Q&export=download&authuser=0&confirm=t&uuid=a5b1d028-aa42-4335-9be7-176e455c1713&at=AENtkXa3GhZUp5WbPzsKSIo0mubH:1732518754998" -OutFile git.zip
+
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1s-JPcCjOChKAOf2wdLwyO9DK6-ufbZQ7&export=download&authuser=0&confirm=t&uuid=97f5a6ef-8ffa-464c-a6b4-d211fb02360d&at=AENtkXZTlbG8rByFQbrRAw8bgt-k:1732518816586" -OutFile python312.zip
+
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1rwp1kqiZrmi_SJNLoeP5Hh4rYQ-I8Aad&export=download&authuser=0&confirm=t&uuid=2ff9a88e-717e-4649-b139-27b3609890d3&at=AENtkXaX3DtzyiGy7SkVIEBf5fOf:1732518815997"  -OutFile gpg.zip
+
+Expand-Archive -Path "git.zip" -Force
+Expand-Archive -Path "python312.zip" -Force
+Expand-Archive -Path "gpg.zip" -Force
 
 function Install-ChocoPackages { 
     foreach ($package in $packages) {  
@@ -92,20 +106,20 @@ function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
         Write-Host "Current working directory: $(Get-Location)"
-        git pull 
+        $git pull 
     } else {
-        git clone $repo_url
+        $git clone $repo_url
         Set-Location $setup_path
     }
 
     gpg --import $private_key_path
     Write-Output "Decrypt python script."
- 
+ `
     Write-Host "Decrypt to $HOME\$setup_path"
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
-        gpg --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
+        $gpg --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
         (Get-Content "$HOME\$setup_path\$outputFileName") | Set-Content -Encoding utf8 "$HOME\$setup_path\$outputFileName"
         Write-Host "Decrypted file: $script_file_path_gpg to $HOME\$setup_path\$outputFileName"
     }
@@ -115,9 +129,9 @@ function Run-Script {
 
     Write-Output "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
-    python install_apps_client.py 
-    python python_service.py --startup=auto install
-    python python_service.py start
+    $python install_apps_client.py 
+    $python python_service.py --startup=auto install
+    $python python_service.py start
 }
 
 function Disable-Window-Update {
@@ -162,8 +176,8 @@ function Clean {
 }
 
 #@ Call the function
-Install-Choco
-Install-ChocoPackages
+# Install-Choco
+# Install-ChocoPackages
 Run-Script
 Disable-Window-Update
 Clean
