@@ -59,7 +59,7 @@ function Install-Choco{
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
        $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
-        choco upgrade chocolatey --version=1.4.0 -y
+        choco upgrade chocolatey --version=1.4.0 -y --force
     #    Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1PsXpF-23svHG3tLsOJvFd6ctL3m_seX0&export=download&authuser=0&confirm=t&uuid=077940ad-b482-4254-a0f6-ceacfd5005e1&at=AENtkXZ3IrP1ZXzSzasP2ghyfx_p:1732505231164" -OutFile chocolatey.zip
     #    Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
     #    $env:Path += ";C:\ProgramData\chocolatey\bin"
