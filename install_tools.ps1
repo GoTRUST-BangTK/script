@@ -2,13 +2,10 @@
  
 $packages = @("python", "gnupg", "git")
 
-# $repo_url = 'http://gitea.local/kimbang/script.git'
 $repo_url = "https://github.com/GoTRUST-BangTK/script.git"
-$private_key_path = 'secret\private_key.asc'
-$script_file_path_gpg= 'install_apps_client.py.gpg' 
-# $config_file_path_gpg= 'config.py.gpg' 
-$python_requirement_path = 'requirements.txt'
 $setup_path = 'script'
+$private_key_path = 'secret\private_key.asc'
+$python_requirement_path = 'requirements.txt'
 # $HOME = 'C:\Windows\System32'
 # $python = '.\python312\Python312\python.exe'
 # $gpg = '.\gpg\gnupg\bin\gpg.exe'
