@@ -14,6 +14,8 @@ $python_requirement_path = 'requirements.txt'
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
 
+#? sync time NTP
+w32tm /resync
 
 Write-Host "Check if the kiosk is already set up."
 if (Test-Path "HKLM:\SOFTWARE\MediPay") {
