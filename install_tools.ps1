@@ -51,16 +51,17 @@ function Install-Choco{
     if (Get-Command choco -ErrorAction SilentlyContinue) {
         Write-Host "Chocolatey is already installed." -ForegroundColor Green
     }else { 
-        Set-ExecutionPolicy Bypass -Scope Process -Force;
         Write-Host "Chocolatey is not installed. Installing now..." -ForegroundColor Yellow
-        Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
-        
+        If( Test-Path -Path "C:\ProgramData\chocolatey" ) {
+            Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
+        }
+       
+        Set-ExecutionPolicy Bypass -Scope Process -Force;
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
        $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
         choco upgrade chocolatey --version=1.4.0 -y --force
     }
-
 }
 
 # Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MRUOB2DDOOEQ4KH-TFOIC3pYOP8fjt6Q&export=download&authuser=0&confirm=t&uuid=a5b1d028-aa42-4335-9be7-176e455c1713&at=AENtkXa3GhZUp5WbPzsKSIo0mubH:1732518754998" -OutFile git.zip
@@ -69,8 +70,23 @@ function Install-Choco{
 
 # Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1rwp1kqiZrmi_SJNLoeP5Hh4rYQ-I8Aad&export=download&authuser=0&confirm=t&uuid=2ff9a88e-717e-4649-b139-27b3609890d3&at=AENtkXaX3DtzyiGy7SkVIEBf5fOf:1732518815997"  -OutFile gpg.zip
 
-# Expand-Archive -Path "git.zip" -Force
+New-Item -Path "C:\ProgramData\chocolatey\lib" -ItemType Directory -Force
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1bTQvjah-QPxnYUqjcaY0ny10D31d7hLo&export=download&authuser=0&confirm=t&uuid=3348b0d5-c8d4-4043-8d79-db4c4971b741&at=AENtkXahT0Y2cBVF6lUegpgVRot9:1732546749167"  -OutFile "C:\ProgramData\chocolatey\lib\vcredist2015.zip"
+Expand-Archive -Path "C:\ProgramData\chocolatey\lib\vcredist2015.zip" -DestinationPath "C:\ProgramData\chocolatey\lib\vcredist2015" -Force
+Remove-Item "C:\ProgramData\chocolatey\lib\vcredist2015.zip" -Force
+ 
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1zq4XkRxIgYZ4tCNpm0d9KvWuCmw7UQro&export=download&authuser=0&confirm=t&uuid=917e5d0d-df63-4668-9144-17194d37c4bf&at=AENtkXamcpWGqVQWUEdKNSPeTCDB:1732548318959"  -OutFile "C:\ProgramData\chocolatey\lib\vcredist140.zip"
+Expand-Archive -Path "C:\ProgramData\chocolatey\lib\vcredist140.zip" -DestinationPath "C:\ProgramData\chocolatey\lib\vcredist140" -Force
+Remove-Item "C:\ProgramData\chocolatey\lib\vcredist140.zip" -Force
+
+Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1IpvigarhlnfHpzMRXghLYrlA6Xao3Y4g&export=download&authuser=0&confirm=t&uuid=5d5cf5b6-38ca-48a2-a690-d97850dc62dd&at=AENtkXbhACtr0AGvEReSexyvcY_W:1732547852560"  -OutFile "chocolatey.zip"
+Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
+$env:Path += ";C:\ProgramData\chocolatey\bin"
+RefreshEnv
+
 # Expand-Archive -Path "python312.zip" -Force
+
+
 # Expand-Archive -Path "gpg.zip" -Force
 
 function Install-ChocoPackages { 
