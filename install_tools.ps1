@@ -131,6 +131,7 @@ function Run-Script {
     Write-Output "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
     python install_apps_client.py 
+    Write-Output "Install and start python service."
     python python_service.py --startup=auto install
     python python_service.py start
 }
@@ -169,7 +170,7 @@ function Disable-Windiws-Defender{
 function Disable-Window-Installer {
     Write-Host " Disable Window Installer ." -ForegroundColor Green
     Stop-Service -Name msiserver
-    Set-Service -Name msiserver -StartupType Disabled
+    # Set-Service -Name msiserver -StartupType Disabled
 }
 
 function Set-Firewall-Rule{
@@ -187,6 +188,7 @@ function Clean {
     Remove-Item -Path $setup_path -Recurse -Force
     Remove-Item *.ps1 
     Remove-Item *.py
+    Remove-Item 'C:\install_app.log'
 }
 
 #@ Call the function
