@@ -166,6 +166,19 @@ function Disable-Windiws-Defender{
     Set-MpPreference -DisableRealtimeMonitoring $true
 }
 
+function Disable-Window-Installer {
+    Write-Host " Disable Window Installer ." -ForegroundColor Green
+    Stop-Service -Name msiserver
+    Set-Service -Name msiserver -StartupType Disabled
+}
+
+function Set-Firewall-Rule{
+    New-NetFirewallRule -DisplayName "Allow DNS for gotrust.vn" -Direction Outbound -Protocol UDP -LocalPort 53 -RemoteAddress any -Action Allow
+
+    New-NetFirewallRule -DisplayName "Block All Other Outbound Traffic" -Direction Outbound -Protocol TCP -Action Block
+}
+
+
 function Clean {
     Write-Host "Cleaning..."
     Set-Location $HOME
