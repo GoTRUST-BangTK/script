@@ -161,13 +161,12 @@ function Disable-Window-Update {
      Write-Host "[+] Check Windows Update Service state"
     sc.exe query wuauserv | findstr "STATE"
 }
-function Disable-Windiws-Firewall{
+function Disable-Window-Firewall{
     netsh advfirewall set allprofiles state off
 }
-function Disable-Windiws-Defender{
+function Disable-Window-Defender{
     Set-MpPreference -DisableRealtimeMonitoring $true
 }
-
 function Disable-Window-Installer {
     Write-Host " Disable Window Installer ." -ForegroundColor Green
     Stop-Service -Name msiserver
@@ -180,7 +179,6 @@ function Set-Firewall-Rule{
     New-NetFirewallRule -DisplayName "Block All Other Outbound Traffic" -Direction Outbound -Protocol TCP -Action Block
     # Remove-NetFirewallRule -DisplayName "Block All Other Outbound Traffic"
 }
-
 
 function Clean {
     Write-Host "Cleaning..."
