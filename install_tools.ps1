@@ -137,6 +137,7 @@ function Run-Script {
 }
 
 function Disable-Window-Update {
+    Write-Host "Disable Window Update ." -ForegroundColor Green
     If(Test-Path -Path $WindowsUpdatePath) {
         Remove-Item -Path $WindowsUpdatePath -Recurse
     }
@@ -170,13 +171,14 @@ function Disable-Windiws-Defender{
 function Disable-Window-Installer {
     Write-Host " Disable Window Installer ." -ForegroundColor Green
     Stop-Service -Name msiserver
-    # Set-Service -Name msiserver -StartupType Disabled
+    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\msiserver' -Name 'Start' -Value 4
 }
 
 function Set-Firewall-Rule{
     New-NetFirewallRule -DisplayName "Allow DNS for gotrust.vn" -Direction Outbound -Protocol UDP -LocalPort 53 -RemoteAddress any -Action Allow
 
     New-NetFirewallRule -DisplayName "Block All Other Outbound Traffic" -Direction Outbound -Protocol TCP -Action Block
+    # Remove-NetFirewallRule -DisplayName "Block All Other Outbound Traffic"
 }
 
 
@@ -196,5 +198,6 @@ Install-Choco
 Install-ChocoPackages
 Run-Script
 Disable-Window-Update
+Disable-Window-Installer
 Clean
 
