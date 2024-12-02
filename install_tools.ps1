@@ -13,190 +13,161 @@ $python_requirement_path = 'requirements.txt'
 
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
+$LogFilePath = "c:\install_tool.log"
 
-#? sync time NTP
-w32tm /resync
+Remove-Item $LogFilePath
 
-Write-Host "Check if the kiosk is already set up."
+#> Run-CommandWithLogging -Command "Get-Process" 
+function Run-CommandWithLogging {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Command
+    )
+
+    try {
+        #? Tee-Object: Prints stdout to the console and writes it to a file simultaneously.
+        Invoke-Expression $Command 2>&1 | Tee-Object -FilePath $LogFilePath -Append
+    } catch {
+        Write-Output "Error occurred: $_" | Tee-Object -FilePath $LogFilePath -Append
+    }
+}
+function    Write-Output_ {
+    if ($args.Count -eq 0) {
+        Write-Output "No message provided"
+    } else {
+        $Message = $args[0]
+        Write-Output $Message
+        $Message | Out-File -FilePath $LogFilePath -Append
+    }
+} 
+
+Run-CommandWithLogging -Command "w32tm /resync" 
+
+Write-Output_ "Check if the kiosk is already set up."
 if (Test-Path "HKLM:\SOFTWARE\MediPay") {
     $kioskId = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "KioskId" -ErrorAction SilentlyContinue
     $secretKey = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "SecretKey" -ErrorAction SilentlyContinue
 
     if ($kioskId.KioskId -and $secretKey.SecretKey) {
-        Write-Host "This machine is already configured." -ForegroundColor Green
+        Write-Output_ "This machine is already configured."
         $userInput = Read-Host "Do you want to continue? (y/n)" 
         if ($userInput -eq 'n') {
-            Write-Host "Exiting script..."
+            Write-Output_ "Exiting script..."
             exit
         } elseif ($userInput -eq 'y') {
-            Write-Host "Continuing with the script..."
+            Write-Output_ "Continuing with the script..."
         } else {
-            Write-Host "Invalid input. Please enter 'y' or 'n'."
+            Write-Output_ "Invalid input. Please enter 'y' or 'n'."
             exit
         }
     } else {
-        Write-Host "Configuration is incomplete.."
+        Write-Output_ "Configuration is incomplete.."
     }
 } else {
-    Write-Host "This machine is not setup yet."
-} 
-
-If(-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
-    Write-Host "Create HKLM:SOFTWARE\AutoUpgrade Registry"
-    New-Item -Path "HKLM:SOFTWARE\AutoUpgrade" -Force
+    Write-Output_ "This machine is not setup yet."
 }
 
-function Install-Choco{ 
+# Tạo registry nếu chưa tồn tại
+if (-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
+    Write-Output_ "Create HKLM:SOFTWARE\AutoUpgrade Registry"
+    Run-CommandWithLogging -Command "New-Item -Path 'HKLM:SOFTWARE\AutoUpgrade' -Force" 
+}
+
+# Cài đặt Chocolatey
+function Install-Choco { 
     if (Get-Command choco -ErrorAction SilentlyContinue) {
-        Write-Host "Chocolatey is already installed." -ForegroundColor Green
-    }else { 
-        Write-Host "Chocolatey is not installed. Installing now..." -ForegroundColor Yellow
-        If( Test-Path -Path "C:\ProgramData\chocolatey" ) {
-            Remove-Item -Recurse -Force "C:\ProgramData\chocolatey"
+    Write-Output_ "Chocolatey is already installed."
+    } else { 
+    Write-Output_ "Chocolatey is not installed. Installing now..."
+        if (Test-Path -Path "C:\ProgramData\chocolatey") {
+            Run-CommandWithLogging -Command "Remove-Item -Recurse -Force 'C:\ProgramData\chocolatey'" 
         }
-       
-        Set-ExecutionPolicy Bypass -Scope Process -Force;
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'));
-       $env:Path += ";$([System.Environment]::GetEnvironmentVariable('ChocolateyInstall'))\bin" 
-        choco upgrade chocolatey --version=1.4.0 -y --force
+        Run-CommandWithLogging -Command "Set-ExecutionPolicy Bypass -Scope Process -Force" 
+        Run-CommandWithLogging -Command "[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072" 
+        Run-CommandWithLogging -Command "Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" 
+        Run-CommandWithLogging -Command "choco upgrade chocolatey --version=1.4.0 -y --force" 
     }
 }
 
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1MRUOB2DDOOEQ4KH-TFOIC3pYOP8fjt6Q&export=download&authuser=0&confirm=t&uuid=a5b1d028-aa42-4335-9be7-176e455c1713&at=AENtkXa3GhZUp5WbPzsKSIo0mubH:1732518754998" -OutFile git.zip
-
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1s-JPcCjOChKAOf2wdLwyO9DK6-ufbZQ7&export=download&authuser=0&confirm=t&uuid=97f5a6ef-8ffa-464c-a6b4-d211fb02360d&at=AENtkXZTlbG8rByFQbrRAw8bgt-k:1732518816586" -OutFile python312.zip
-
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1rwp1kqiZrmi_SJNLoeP5Hh4rYQ-I8Aad&export=download&authuser=0&confirm=t&uuid=2ff9a88e-717e-4649-b139-27b3609890d3&at=AENtkXaX3DtzyiGy7SkVIEBf5fOf:1732518815997"  -OutFile gpg.zip
-
-# New-Item -Path "C:\ProgramData\chocolatey\lib" -ItemType Directory -Force
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1bTQvjah-QPxnYUqjcaY0ny10D31d7hLo&export=download&authuser=0&confirm=t&uuid=3348b0d5-c8d4-4043-8d79-db4c4971b741&at=AENtkXahT0Y2cBVF6lUegpgVRot9:1732546749167"  -OutFile "C:\ProgramData\chocolatey\lib\vcredist2015.zip"
-# Expand-Archive -Path "C:\ProgramData\chocolatey\lib\vcredist2015.zip" -DestinationPath "C:\ProgramData\chocolatey\lib\vcredist2015" -Force
-# Remove-Item "C:\ProgramData\chocolatey\lib\vcredist2015.zip" -Force
- 
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1zq4XkRxIgYZ4tCNpm0d9KvWuCmw7UQro&export=download&authuser=0&confirm=t&uuid=917e5d0d-df63-4668-9144-17194d37c4bf&at=AENtkXamcpWGqVQWUEdKNSPeTCDB:1732548318959"  -OutFile "C:\ProgramData\chocolatey\lib\vcredist140.zip"
-# Expand-Archive -Path "C:\ProgramData\chocolatey\lib\vcredist140.zip" -DestinationPath "C:\ProgramData\chocolatey\lib\vcredist140" -Force
-# Remove-Item "C:\ProgramData\chocolatey\lib\vcredist140.zip" -Force
-
-# Invoke-WebRequest -Uri "https://drive.usercontent.google.com/download?id=1IpvigarhlnfHpzMRXghLYrlA6Xao3Y4g&export=download&authuser=0&confirm=t&uuid=5d5cf5b6-38ca-48a2-a690-d97850dc62dd&at=AENtkXbhACtr0AGvEReSexyvcY_W:1732547852560"  -OutFile "chocolatey.zip"
-# Expand-Archive -Path "$HOME\chocolatey.zip" -DestinationPath "C:\ProgramData"
-# $env:Path += ";C:\ProgramData\chocolatey\bin"
-# RefreshEnv
-
-function Install-ChocoPackages { 
-    foreach ($package in $packages) {  
-        choco install $package -y 
+# Hàm cài đặt các gói bằng Chocolatey
+function Install-ChocoPackages {
+    foreach ($package in $packages) {
+        Run-CommandWithLogging -Command "choco install $package -y" 
     }
-    
-    Write-Output "Refresh environment" 
-    Import-Module C:\ProgramData\Chocolatey\helpers\chocolateyProfile.psm1; Update-SessionEnvironment
+
+    Write-Output_ "Refresh environment"
+    Run-CommandWithLogging -Command "Import-Module C:\ProgramData\Chocolatey\helpers\chocolateyProfile.psm1; Update-SessionEnvironment" 
 
     if (Get-Command pip -ErrorAction SilentlyContinue) {
-        Write-Host "pip is already installed."
+    Write-Output_ "pip is already installed."
     } else {
-        Write-Host "pip is not installed. Installing now..."
+    Write-Output_ "pip is not installed. Installing now..."
         Install-Choco
-        Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py
-        python get-pip.py
-        Import-Module C:\ProgramData\Chocolatey\helpers\chocolateyProfile.psm1; Update-SessionEnvironment
+        Run-CommandWithLogging -Command "Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py" 
+        Run-CommandWithLogging -Command "python get-pip.py" 
+        Run-CommandWithLogging -Command "Import-Module C:\ProgramData\Chocolatey\helpers\chocolateyProfile.psm1; Update-SessionEnvironment" 
     }
-    Write-Host "All requested software has been installed." -ForegroundColor Green
+    Write-Output_ "All requested software has been installed."
 }
 
+# Hàm chạy script
 function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
-        Write-Host "Current working directory: $(Get-Location)"
-        git pull 
+        Write-Output_ "Current working directory: $(Get-Location)"
+        Run-CommandWithLogging -Command "git pull" 
     } else {
-        git clone $repo_url
+        Run-CommandWithLogging -Command "git clone $repo_url" 
         Set-Location $setup_path
     }
 
-    gpg --import $private_key_path
-    Write-Output "Decrypt python script."
- 
-    Write-Host "Decrypt to $HOME\$setup_path"
+    Run-CommandWithLogging -Command "gpg --import $private_key_path" 
+    Write-Output_ "Decrypt python script."
+
+    Write-Output_ "Decrypt to $HOME\$setup_path"
     Get-ChildItem -Path . -Filter *.gpg | ForEach-Object {
         $script_file_path_gpg = $_.FullName
         $outputFileName = $_.BaseName
-        gpg --decrypt $script_file_path_gpg > "$HOME\$setup_path\$outputFileName"
+        Run-CommandWithLogging -Command "gpg --decrypt $script_file_path_gpg > '$HOME\$setup_path\$outputFileName'" 
         (Get-Content "$HOME\$setup_path\$outputFileName") | Set-Content -Encoding utf8 "$HOME\$setup_path\$outputFileName"
-        Write-Host "Decrypted file: $script_file_path_gpg to $HOME\$setup_path\$outputFileName"
+    Write-Output_ "Decrypted file: $script_file_path_gpg to $HOME\$setup_path\$outputFileName"
     }
 
-    Write-Host "Pip installing requirements"
-    pip install -r $python_requirement_path
+    Write-Output_ "Pip installing requirements"
+    Run-CommandWithLogging -Command "pip install -r $python_requirement_path" 
 
-    Write-Output "Run python script."
+    Write-Output_ "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
-    python install_apps_client.py 
-    Write-Output "Install and start python service."
+    python install_apps_client.py
+    Write-Output_ "Install and start python service."
     python python_service.py stop
     python python_service.py --startup=auto install
     python python_service.py start
 }
 
 function Disable-Window-Update {
-    Write-Host "Disable Window Update ." -ForegroundColor Green
-    If(Test-Path -Path $WindowsUpdatePath) {
-        Remove-Item -Path $WindowsUpdatePath -Recurse
+    Write-Output_ "Disable Window Update ."
+    If (Test-Path -Path $WindowsUpdatePath) {
+        Run-CommandWithLogging -Command "Remove-Item -Path $WindowsUpdatePath -Recurse" 
     }
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Force
-    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Force
-    Write-Host "[+] Disable AutoUpdate:"
-    Set-ItemProperty -Path $AutoUpdatePath -Name NoAutoUpdate -Value 1
-    Write-Host "[+] Disabel Windows update ScheduledTask"
-    Get-ScheduledTask -TaskPath "\Microsoft\Windows\WindowsUpdate\" | Disable-ScheduledTask
-    Write-Host "[+] Take Windows update  Orchestrator ownership"
-    takeown /F C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /A /R
-    icacls C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /grant Administrators:F /T
-    Write-Host "[+] List Windows update  Orchestrator ownership"
-    Get-ScheduledTask -TaskPath "\Microsoft\Windows\UpdateOrchestrator\" | Disable-ScheduledTask
-    Write-Host "[+] Disable Windows Update Server AutoStartup"
-    Set-Service wuauserv -StartupType Disabled
-    sc.exe config wuauserv start=disabled 
-    Write-Host "[+] Disable Windows Update Running Service"
-    Stop-Service wuauserv 
-    sc.exe stop wuauserv 
-     Write-Host "[+] Check Windows Update Service state"
-    sc.exe query wuauserv | findstr "STATE"
-}
-function Disable-Window-Firewall{
-    netsh advfirewall set allprofiles state off
-}
-function Disable-Window-Defender{
-    Set-MpPreference -DisableRealtimeMonitoring $true
-}
-function Disable-Window-Installer {
-    Write-Host " Disable Window Installer ." -ForegroundColor Green
-    Stop-Service -Name msiserver
-    Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\msiserver' -Name 'Start' -Value 4
+    Run-CommandWithLogging -Command "New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Force" 
+    Run-CommandWithLogging -Command "New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Force" 
+    Run-CommandWithLogging -Command "Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoUpdate -Value 1" 
 }
 
-function Set-Firewall-Rule{
-    New-NetFirewallRule -DisplayName "Allow DNS for gotrust.vn" -Direction Outbound -Protocol UDP -LocalPort 53 -RemoteAddress any -Action Allow
-
-    New-NetFirewallRule -DisplayName "Block All Other Outbound Traffic" -Direction Outbound -Protocol TCP -Action Block
-    # Remove-NetFirewallRule -DisplayName "Block All Other Outbound Traffic"
+function Disable-Window-Firewall {
+    Run-CommandWithLogging -Command "netsh advfirewall set allprofiles state off" 
 }
 
-function Clean {
-    Write-Host "Cleaning..."
-    Set-Location $HOME
-    $self = $MyInvocation.MyCommand.Definition
-    Write-Host "Remove script file name: $self"
-    Remove-Item -Path $setup_path -Recurse -Force
-    Remove-Item *.ps1 
-    Remove-Item *.py
-    Remove-Item 'C:\install_app.log'
+function Disable-Window-Defender {
+    Run-CommandWithLogging -Command "Set-MpPreference -DisableRealtimeMonitoring $true" 
 }
+
 
 #@ Call the function
 Install-Choco
 Install-ChocoPackages
 Run-Script
 Disable-Window-Update
-Disable-Window-Installer
-Clean
+Disable-Window-Installer 
 
