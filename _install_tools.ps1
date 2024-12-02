@@ -41,25 +41,25 @@ function    Write-Output_ {
 
 Run-CommandWithLogging -Command "w32tm /resync" 
 
-    Write-Output_ "Check if the kiosk is already set up."
+Write-Output_ "Check if the kiosk is already set up."
 if (Test-Path "HKLM:\SOFTWARE\MediPay") {
     $kioskId = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "KioskId" -ErrorAction SilentlyContinue
     $secretKey = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "SecretKey" -ErrorAction SilentlyContinue
 
     if ($kioskId.KioskId -and $secretKey.SecretKey) {
-    Write-Output_ "This machine is already configured."
+        Write-Output_ "This machine is already configured."
         $userInput = Read-Host "Do you want to continue? (y/n)" 
         if ($userInput -eq 'n') {
-    Write-Output_ "Exiting script..."
+            Write-Output_ "Exiting script..."
             exit
         } elseif ($userInput -eq 'y') {
-    Write-Output_ "Continuing with the script..."
+            Write-Output_ "Continuing with the script..."
         } else {
-    Write-Output_ "Invalid input. Please enter 'y' or 'n'."
+            Write-Output_ "Invalid input. Please enter 'y' or 'n'."
             exit
         }
     } else {
-    Write-Output_ "Configuration is incomplete.."
+        Write-Output_ "Configuration is incomplete.."
     }
 } else {
     Write-Output_ "This machine is not setup yet."
@@ -136,11 +136,11 @@ function Run-Script {
 
     Write-Output_ "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
-    Run-CommandWithLogging -Command "python install_apps_client.py" 
+    python install_apps_client.py
     Write-Output_ "Install and start python service."
-    Run-CommandWithLogging -Command "python python_service.py stop" 
-    Run-CommandWithLogging -Command "python python_service.py --startup=auto install" 
-    Run-CommandWithLogging -Command "python python_service.py start" 
+    python python_service.py stop
+    python python_service.py --startup=auto install
+    python python_service.py start
 }
 
 function Disable-Window-Update {
