@@ -13,7 +13,7 @@ $python_requirement_path = 'requirements.txt'
 
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
-
+$LogFilePath = "c:\install_tools.log"
 
 #> Run-CommandWithLogging -Command "Get-Process" -LogFilePath "process_log.txt"
 function Run-CommandWithLogging {
