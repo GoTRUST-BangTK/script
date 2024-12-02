@@ -15,6 +15,8 @@ $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
 $LogFilePath = "c:\install_tools.log"
 
+Remove-Item $LogFilePath
+
 #> Run-CommandWithLogging -Command "Get-Process" 
 function Run-CommandWithLogging {
     param (
@@ -112,7 +114,7 @@ function Install-ChocoPackages {
 function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
-    Write-Output_ "Current working directory: $(Get-Location)"
+        Write-Output_ "Current working directory: $(Get-Location)"
         Run-CommandWithLogging -Command "git pull" 
     } else {
         Run-CommandWithLogging -Command "git clone $repo_url" 
