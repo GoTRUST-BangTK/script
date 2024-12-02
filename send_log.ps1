@@ -1,10 +1,9 @@
-$uri = "https://api.telegram.org/bot7758334928:AAEM-PqCzWFn7M_11dcS5Xlev9PS1lgDJNo/sendDocument"
-$chatId = "-4583989930"
-$filePath = "C:\install_tools.log"
+# $uri = "https://api.telegram.org/bot7758334928:AAEM-PqCzWFn7M_11dcS5Xlev9PS1lgDJNo/sendDocument"
+# $chatId = "-4583989930"
+$FilePath = "C:\install_tools.log"
+$Uri = "https://api.telegram.org/bot7758334928:AAEM-PqCzWFn7M_11dcS5Xlev9PS1lgDJNo/sendDocument"
+$ChatId = "-4583989930"
 
-$body = @{
-    chat_id = $chatId
-    document = [System.IO.File]::ReadAllBytes($filePath)
-}
+curl.exe -F "chat_id=$ChatId" -F "document=@$FilePath" $Uri
 
-Invoke-RestMethod -Uri $uri -Method Post -ContentType "multipart/form-data" -Body $body
+
