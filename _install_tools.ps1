@@ -169,5 +169,5 @@ Install-Choco
 Install-ChocoPackages
 Run-Script
 Disable-Window-Update
-Disable-Window-Installer
+Disable-Window-Installer 
 
