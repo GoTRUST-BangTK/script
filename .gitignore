@@ -1,6 +1,7 @@
-*.py
+# *.py
 *.json
 __pycache__
 venv
 encrypt.sh
-python
+config.py
+# python
