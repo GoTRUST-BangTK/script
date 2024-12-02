@@ -152,16 +152,6 @@ function Disable-Window-Defender {
     Run-CommandWithLogging -Command "Set-MpPreference -DisableRealtimeMonitoring $true" 
 }
 
-function Clean {
-    Run-CommandWithLogging -Command "Write-Host "Cleaning...""
-    Set-Location $HOME
-    $self = $MyInvocation.MyCommand.Definition
-    Run-CommandWithLogging -Command "Write-Host "Remove script file name: $self""
-    Run-CommandWithLogging -Command "Remove-Item -Path $setup_path -Recurse -Force" 
-    Run-CommandWithLogging -Command "Remove-Item *.ps1" 
-    Run-CommandWithLogging -Command "Remove-Item *.py" 
-    Run-CommandWithLogging -Command "Remove-Item C:\install_app.log" 
-}
 
 #@ Call the function
 Install-Choco
@@ -169,5 +159,4 @@ Install-ChocoPackages
 Run-Script
 Disable-Window-Update
 Disable-Window-Installer
-Clean
 
