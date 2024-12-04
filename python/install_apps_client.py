@@ -34,6 +34,8 @@ REDIST_SETUP_PATH = config.REDIST_SETUP_PATH
 PRINTER_FOLDER_PATH = config.PRINTER_FOLDER_PATH
 REGEDIT_FILE_PATH = config.REGEDIT_FILE_PATH
 MEDIPAY_UPDATER_FOLDER_PATH = config.MEDIPAY_UPDATER_FOLDER_PATH
+HN212_PLUGIN_FOLDER_PATH = config.HN212_PLUGIN_FOLDER_PATH
+HN212_PLUGIN_CONFIG_PATH = config.HN212_PLUGIN_CONFIG_PATH
 
 paths = [API_LOCAL_FOLDER_PATH, MEDIPAYAPP_FOLDER_PATH, CCCD_SETUP_FOLDER_PATH,
          REDIST_SETUP_PATH, PRINTER_FOLDER_PATH, REGEDIT_FILE_PATH]
@@ -177,6 +179,12 @@ logger.info(
 print("=============== copy MediPay App files to the 'MediPay' folder. =================")
 medipay_source_folder = SETUP_FOLDER_PATH / MEDIPAYAPP_FOLDER_PATH
 shutil.copytree(medipay_source_folder, MEDIPAY_FOLDER_PATH, dirs_exist_ok=True)
+
+logger.info(
+    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
+print(
+    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
+shutil.copy(HN212_PLUGIN_CONFIG_PATH, HN212_PLUGIN_FOLDER_PATH)
 
 cccd_setup_bin_path = find_file(CCCD_SETUP_FOLDER_PATH, file_exe_pattern)
 logger.info(f"\n=============== Install CCCD Reader App: {

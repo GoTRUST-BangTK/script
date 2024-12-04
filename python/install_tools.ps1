@@ -1,5 +1,5 @@
  # $($args[0])"
- 
+
 $packages = @("python", "gnupg", "git")
 
 $repo_url = "https://github.com/GoTRUST-BangTK/script.git"
