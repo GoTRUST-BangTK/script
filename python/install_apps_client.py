@@ -180,14 +180,6 @@ print("=============== copy MediPay App files to the 'MediPay' folder. =========
 medipay_source_folder = SETUP_FOLDER_PATH / MEDIPAYAPP_FOLDER_PATH
 shutil.copytree(medipay_source_folder, MEDIPAY_FOLDER_PATH, dirs_exist_ok=True)
 
-logger.info(
-    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
-print(
-    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
-if not os.path.exists(HN212_PLUGIN_FOLDER_PATH):
-    print(f"File '{HN212_PLUGIN_FOLDER_PATH}' is not existing.")
-else:
-    shutil.copy(HN212_PLUGIN_CONFIG_PATH, HN212_PLUGIN_FOLDER_PATH)
 
 cccd_setup_bin_path = find_file(CCCD_SETUP_FOLDER_PATH, file_exe_pattern)
 logger.info(f"\n=============== Install CCCD Reader App: {
@@ -196,6 +188,18 @@ print(f"\n=============== Install CCCD Reader App: {
       cccd_setup_bin_path} =================")
 # threading.Thread(target=run_command  , args=(str(cccd_setup_bin_path),)).start() #>
 run_command(str(cccd_setup_bin_path))
+
+
+logger.info(
+    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
+print(
+    f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
+if not os.path.exists(HN212_PLUGIN_FOLDER_PATH):
+    print(f"File '{HN212_PLUGIN_FOLDER_PATH}' is not existing.")
+    os.makedirs(HN212_PLUGIN_FOLDER_PATH)
+else:
+    shutil.copy(HN212_PLUGIN_CONFIG_PATH, HN212_PLUGIN_FOLDER_PATH)
+
 
 redist_setup_bin_path = find_file(REDIST_SETUP_PATH, file_exe_pattern)
 logger.info(f"\n=============== Install VC_redist: {
