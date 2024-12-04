@@ -184,7 +184,10 @@ logger.info(
     f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
 print(
     f"=============== copy HN212 log config to the {HN212_PLUGIN_FOLDER_PATH} folder. =================")
-shutil.copy(HN212_PLUGIN_CONFIG_PATH, HN212_PLUGIN_FOLDER_PATH)
+if not os.path.exists(HN212_PLUGIN_FOLDER_PATH):
+    print(f"File '{HN212_PLUGIN_FOLDER_PATH}' is not existing.")
+else:
+    shutil.copy(HN212_PLUGIN_CONFIG_PATH, HN212_PLUGIN_FOLDER_PATH)
 
 cccd_setup_bin_path = find_file(CCCD_SETUP_FOLDER_PATH, file_exe_pattern)
 logger.info(f"\n=============== Install CCCD Reader App: {
