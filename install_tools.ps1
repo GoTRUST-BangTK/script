@@ -139,10 +139,10 @@ function Run-Script {
     Write-Output_ "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
     python install_apps_client.py
-    Write-Output_ "Install and start python service."
-    python python_service.py stop
-    python python_service.py --startup=auto install
-    python python_service.py start
+    # Write-Output_ "Install and start python service."
+    # python python_service.py stop
+    # python python_service.py --startup=auto install
+    # python python_service.py start
 }
 
 function Disable-Window-Update {

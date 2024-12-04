@@ -295,12 +295,16 @@ def create_shortcut(target, shortcut_name):
 logger.info(
     "================= Config auto-start configuration for MediPay, HN212 and API ================= ")
 print("================= Config auto-start configuration for MediPay, HN212 and API ================= ")
+print(medipay_bin_path, "MediPay")
+print(api_bin_path, "API")
+
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")
-create_shortcut(cccd_bin_path, "HN212")
-create_shortcut(medipay_updater_bin_path, "Auto_Updater")
+# create_shortcut(cccd_bin_path, "HN212")
+# create_shortcut(medipay_updater_bin_path, "Auto_Updater")
 
-filenames = ["MediPay.lnk", "API.lnk", "HN212.lnk", "Auto_Updater.lnk"]
+filenames = ["MediPay.lnk", "API.lnk"]
+# filenames = ["MediPay.lnk", "API.lnk", "HN212.lnk", "Auto_Updater.lnk"]
 check_result = check_files_in_folder(startup_folder, filenames)
 
 for filename, exists in check_result.items():
