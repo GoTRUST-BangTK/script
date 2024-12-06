@@ -294,10 +294,10 @@ def create_shortcut(target, shortcut_name):
 logger.info(
     "================= Config auto-start configuration for MediPay, HN212 and API ================= ")
 print("================= Config auto-start configuration for MediPay, HN212 and API ================= ")
-if not medipay_bin_path.exists():
-    raise FileNotFoundError(f"Target path does not exist: {medipay_bin_path}")
-if not api_bin_path.exists():
-    raise FileNotFoundError(f"Target path does not exist: {api_bin_path}")
+if not  os.path.isfile(medipay_bin_path):
+    print(f"Target path does not exist: {medipay_bin_path}")
+if not os.path.isfile(medipay_bin_path):
+    print(f"Target path does not exist: {api_bin_path}")
 
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")
