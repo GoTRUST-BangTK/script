@@ -178,6 +178,13 @@ function Disable-Window-Defender {
     Run-CommandWithLogging -Command "Set-MpPreference -DisableRealtimeMonitoring $true" 
 }
 
+function Disable-Window-Installer {
+    Write-Output_ "Disable Window Installer."
+    Stop-Service -Name msiserver
+    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\msiserver" -Name "Start" -Value 4
+    Get-Service -Name msiserver
+}
+
 function Disable-Screen-Edge-Swipe {
     Write-Output_ "Disable Screen Edge Swipe."
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EdgeUI" /v AllowEdgeSwipe /t REG_DWORD /d 0 /f
