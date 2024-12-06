@@ -5,3 +5,5 @@ venv
 encrypt.sh
 config.py
 # python
+test.py
+test.py.gpg

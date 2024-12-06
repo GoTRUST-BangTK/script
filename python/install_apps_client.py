@@ -209,12 +209,12 @@ print(f"\n=============== Install VC_redist: {
 # threading.Thread(target=run_command  , args=(str(redist_setup_bin_path),)).start() #>
 run_command(str(redist_setup_bin_path))
 
-logger.info(f"\n=============== Install medipay updater: {
-            MEDIPAY_UPDATER_FOLDER_PATH} =================")
-print(f"\n=============== Install medipay updater: {
-      MEDIPAY_UPDATER_FOLDER_PATH} =================")
-threading.Thread(target=run_command, args=(
-    str(medipay_updater_bin_path), True,)).start()  #>
+# logger.info(f"\n=============== Install medipay updater: {
+#             MEDIPAY_UPDATER_FOLDER_PATH} =================")
+# print(f"\n=============== Install medipay updater: {
+#       MEDIPAY_UPDATER_FOLDER_PATH} =================")
+# threading.Thread(target=run_command, args=(
+#     str(medipay_updater_bin_path), True,)).start()  #>
 # run_command(str(medipay_updater_bin_path))
 
 logger.info(
@@ -232,7 +232,6 @@ else:
     logger.info("Printer w80 is already installed. ")
     print("Printer w80 is already installed. ")
 
-import winreg
 
 def check_registry_key_exists(path):
     try:
@@ -295,8 +294,10 @@ def create_shortcut(target, shortcut_name):
 logger.info(
     "================= Config auto-start configuration for MediPay, HN212 and API ================= ")
 print("================= Config auto-start configuration for MediPay, HN212 and API ================= ")
-print(medipay_bin_path, "MediPay")
-print(api_bin_path, "API")
+if not medipay_bin_path.exists():
+    raise FileNotFoundError(f"Target path does not exist: {medipay_bin_path}")
+if not api_bin_path.exists():
+    raise FileNotFoundError(f"Target path does not exist: {api_bin_path}")
 
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")

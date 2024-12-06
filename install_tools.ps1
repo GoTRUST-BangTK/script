@@ -146,13 +146,28 @@ function Run-Script {
 }
 
 function Disable-Window-Update {
-    Write-Output_ "Disable Window Update ."
-    If (Test-Path -Path $WindowsUpdatePath) {
-        Run-CommandWithLogging -Command "Remove-Item -Path $WindowsUpdatePath -Recurse" 
+    If(Test-Path -Path $WindowsUpdatePath) {
+        Run-CommandWithLogging -Command "Remove-Item -Path $WindowsUpdatePath -Recurse"
     }
-    Run-CommandWithLogging -Command "New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Force" 
-    Run-CommandWithLogging -Command "New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Force" 
-    Run-CommandWithLogging -Command "Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name NoAutoUpdate -Value 1" 
+    Run-CommandWithLogging -Command "New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Force"
+    Run-CommandWithLogging -Command "New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Force"
+    Write-Output_ "[+] Disable AutoUpdate:"
+    Run-CommandWithLogging -Command "Set-ItemProperty -Path $AutoUpdatePath -Name NoAutoUpdate -Value 1"
+    Write-Output_ "[+] Disabel Windows update ScheduledTask"
+    Run-CommandWithLogging -Command "Get-ScheduledTask -TaskPath '\Microsoft\Windows\WindowsUpdate\' | Disable-ScheduledTask"
+    Write-Output_ "[+] Take Windows update  Orchestrator ownership"
+    Run-CommandWithLogging -Command "takeown /F C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /A /R"
+    Run-CommandWithLogging -Command "icacls C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /grant Administrators:F /T"
+    Write-Output_ "[+] List Windows update  Orchestrator ownership"
+    Run-CommandWithLogging -Command "Get-ScheduledTask -TaskPath "\Microsoft\Windows\UpdateOrchestrator\" | Disable-ScheduledTask"
+    Write-Output_ "[+] Disable Windows Update Server AutoStartup"
+    Run-CommandWithLogging -Command "Set-Service wuauserv -StartupType Disabled"
+    Run-CommandWithLogging -Command "sc.exe config wuauserv start=disabled "
+    Write-Output_ "[+] Disable Windows Update Running Service"
+    Run-CommandWithLogging -Command "Stop-Service wuauserv "
+    Run-CommandWithLogging -Command "sc.exe stop wuauserv "
+    Write-Output_ "[+] Check Windows Update Service state"
+    Run-CommandWithLogging -Command "sc.exe query wuauserv | findstr 'STATE'"
 }
 
 function Disable-Window-Firewall {
@@ -163,6 +178,12 @@ function Disable-Window-Defender {
     Run-CommandWithLogging -Command "Set-MpPreference -DisableRealtimeMonitoring $true" 
 }
 
+function Disable-Screen-Edge-Swipe {
+    Write-Output_ "Disable Screen Edge Swipe."
+    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EdgeUI" /v AllowEdgeSwipe /t REG_DWORD /d 0 /f
+    taskkill /f /im explorer.exe
+    start explorer.exe
+}
 
 #@ Call the function
 Install-Choco
@@ -170,4 +191,4 @@ Install-ChocoPackages
 Run-Script
 Disable-Window-Update
 Disable-Window-Installer 
-
+Disable-Screen-Edge-Swipe 
