@@ -12,12 +12,12 @@ function Clean {
     Set-Location $HOME
     $self = $MyInvocation.MyCommand.Definition
     Write-Host "Remove script file name: $self"
-    Remove-Item -Path $setup_path -Recurse -Force
-    Remove-Item *.ps1
-    Remove-Item *.py
-    Remove-Item *.gpg
-    Remove-Item C:\install_app.log
-    Remove-Item C:\install_tool.log
+    Remove-Item -Path $setup_path -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item *.ps1 -ErrorAction SilentlyContinue
+    Remove-Item *.py -ErrorAction SilentlyContinue
+    Remove-Item *.gpg -ErrorAction SilentlyContinue
+    Remove-Item C:\install_app.log -ErrorAction SilentlyContinue
+    Remove-Item C:\install_tool.log -ErrorAction SilentlyContinue
 }
 
 Send-Log

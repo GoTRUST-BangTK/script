@@ -5,17 +5,13 @@ $packages = @("python", "gnupg", "git")
 $repo_url = "https://github.com/GoTRUST-BangTK/script.git"
 $setup_path = 'script'
 $private_key_path = 'secret\private_key.asc'
-$python_requirement_path = 'requirements.txt'
-# $HOME = 'C:\Windows\System32'
-# $python = '.\python312\Python312\python.exe'
-# $gpg = '.\gpg\gnupg\bin\gpg.exe'
-# $git = '\git\Git\bin\git.exe'
+$python_requirement_path = 'requirements.txt' 
 
 $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
 $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
 $LogFilePath = "c:\install_tool.log"
 
-Remove-Item $LogFilePath
+Remove-Item $LogFilePath -ErrorAction SilentlyContinue
 
 #> Run-CommandWithLogging -Command "Get-Process" 
 function Run-CommandWithLogging {
@@ -73,7 +69,6 @@ if (-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
     Run-CommandWithLogging -Command "New-Item -Path 'HKLM:SOFTWARE\AutoUpgrade' -Force" 
 }
 
-# Cài đặt Chocolatey
 function Install-Choco { 
     if (Get-Command choco -ErrorAction SilentlyContinue) {
     Write-Output_ "Chocolatey is already installed."
@@ -89,7 +84,6 @@ function Install-Choco {
     }
 }
 
-# Hàm cài đặt các gói bằng Chocolatey
 function Install-ChocoPackages {
     foreach ($package in $packages) {
         Run-CommandWithLogging -Command "choco install $package -y" 
@@ -110,7 +104,6 @@ function Install-ChocoPackages {
     Write-Output_ "All requested software has been installed."
 }
 
-# Hàm chạy script
 function Run-Script {
     if (Test-Path $setup_path) {
         Set-Location $setup_path
@@ -139,10 +132,16 @@ function Run-Script {
     Write-Output_ "Run python script."
     $env:PYTHONDONTWRITEBYTECODE=1
     python install_apps_client.py
-    # Write-Output_ "Install and start python service."
-    # python python_service.py stop
-    # python python_service.py --startup=auto install
-    # python python_service.py start
+
+    if ($env:TEST -eq 'true') {
+        Write-Output_ "Install and start python service."
+        python python_service.py stop
+        python python_service.py --startup=auto install
+        python python_service.py start
+
+        Write-Output_ "Install task scheduler for sending log."
+        python task_scheduler.py
+    } 
 }
 
 function Disable-Window-Update {
@@ -159,7 +158,7 @@ function Disable-Window-Update {
     Run-CommandWithLogging -Command "takeown /F C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /A /R"
     Run-CommandWithLogging -Command "icacls C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /grant Administrators:F /T"
     Write-Output_ "[+] List Windows update  Orchestrator ownership"
-    Run-CommandWithLogging -Command "Get-ScheduledTask -TaskPath "\Microsoft\Windows\UpdateOrchestrator\" | Disable-ScheduledTask"
+    Run-CommandWithLogging -Command "Get-ScheduledTask -TaskPath '\Microsoft\Windows\UpdateOrchestrator\' | Disable-ScheduledTask"
     Write-Output_ "[+] Disable Windows Update Server AutoStartup"
     Run-CommandWithLogging -Command "Set-Service wuauserv -StartupType Disabled"
     Run-CommandWithLogging -Command "sc.exe config wuauserv start=disabled "
@@ -192,10 +191,10 @@ function Disable-Screen-Edge-Swipe {
     start explorer.exe
 }
 
-#@ Call the function
+#@ Call the functions
 Install-Choco
 Install-ChocoPackages
-Run-Script
+Run-Script  
 Disable-Window-Update
 Disable-Window-Installer 
 Disable-Screen-Edge-Swipe 
