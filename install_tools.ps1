@@ -148,8 +148,8 @@ function Disable-Window-Update {
     If(Test-Path -Path $WindowsUpdatePath) {
         Run-CommandWithLogging -Command "Remove-Item -Path $WindowsUpdatePath -Recurse"
     }
-    Run-CommandWithLogging -Command "New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Force"
-    Run-CommandWithLogging -Command "New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Force"
+    Run-CommandWithLogging -Command "New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' -Force"
+    Run-CommandWithLogging -Command "New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU' -Force"
     Write-Output_ "[+] Disable AutoUpdate:"
     Run-CommandWithLogging -Command "Set-ItemProperty -Path $AutoUpdatePath -Name NoAutoUpdate -Value 1"
     Write-Output_ "[+] Disabel Windows update ScheduledTask"
