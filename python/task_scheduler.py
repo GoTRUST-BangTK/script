@@ -53,7 +53,7 @@ def create_task_scheduler(task_name, program_path, arguments, description, trigg
 # program_path = r"C:\Python312\python.exe"
 create_task_scheduler(
     task_name="SendLog",
-    python_path=sys.executable,
+    program_path=sys.executable,
     arguments=str(config.SEND_LOG_FILE_PATH),
     description="Task to run script daily at 2:00 PM and 6:00 PM",
     triggers=[(14, 0), (18, 0)],
@@ -61,10 +61,10 @@ create_task_scheduler(
 
 create_task_scheduler(
     task_name="Shutdown",
-    python_path=sys.executable,
+    program_path=sys.executable,
     arguments=str(config.SHUT_DOWN_FILE_PATH),
     description="Task to run script daily at 2:00 PM and 6:00 PM",
-    triggers=[(17, 30), (11, 0)],
+    triggers=[(9, 58), (11, 0)],
     # triggers=[(17, 30), (11, 0)],
 )
 
