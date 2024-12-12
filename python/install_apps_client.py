@@ -294,10 +294,10 @@ def create_shortcut(target, shortcut_name):
 logger.info(
     "================= Config auto-start configuration for MediPay, HN212 and API ================= ")
 print("================= Config auto-start configuration for MediPay, HN212 and API ================= ")
-if not  os.path.isfile(medipay_bin_path):
-    print(f"Target path does not exist: {medipay_bin_path}")
-if not os.path.isfile(medipay_bin_path):
-    print(f"Target path does not exist: {api_bin_path}")
+# if not  os.path.isfile(medipay_bin_path):
+#     print(f"Target path does not exist: {medipay_bin_path}")
+# if not os.path.isfile(medipay_bin_path):
+#     print(f"Target path does not exist: {api_bin_path}")
 
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")
@@ -316,15 +316,15 @@ for filename, exists in check_result.items():
         logger.info(f"Creating {filename} shortcut failed.")
         print(f"Create {filename} shortcut failed.")
 
-# @ Send log to telegram
-def send_log():
-    files = {
-        'chat_id': (None, '-4583989930'),
-        'document': open(INSTALL_APP_LOG_FILE_PATH, 'rb'),
-    }
-    response = requests.post(TELEGRAM_API,
-                             files=files,
-                             )
-    print("Send log to telegram: ", response.status_code, response.text)
+# # @ Send log to telegram
+# def send_log():
+#     files = {
+#         'chat_id': (None, '-4583989930'),
+#         'document': open(INSTALL_APP_LOG_FILE_PATH, 'rb'),
+#     }
+#     response = requests.post(TELEGRAM_API,
+#                              files=files,
+#                              )
+#     print("Send log to telegram: ", response.status_code, response.text)
 
-send_log()
+# send_log()
