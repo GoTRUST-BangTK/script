@@ -302,7 +302,7 @@ print("================= Config auto-start configuration for MediPay, HN212 and 
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")
 # create_shortcut(cccd_bin_path, "HN212")
-create_shortcut(medipay_updater_bin_path, "Auto_Updater")
+# create_shortcut(medipay_updater_bin_path, "Auto_Updater")
 
 filenames = ["MediPay.lnk", "API.lnk"]
 # filenames = ["MediPay.lnk", "API.lnk", "HN212.lnk", "Auto_Updater.lnk"]
