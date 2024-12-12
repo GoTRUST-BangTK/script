@@ -209,12 +209,12 @@ print(f"\n=============== Install VC_redist: {
 # threading.Thread(target=run_command  , args=(str(redist_setup_bin_path),)).start() #>
 run_command(str(redist_setup_bin_path))
 
-# logger.info(f"\n=============== Install medipay updater: {
-#             MEDIPAY_UPDATER_FOLDER_PATH} =================")
-# print(f"\n=============== Install medipay updater: {
-#       MEDIPAY_UPDATER_FOLDER_PATH} =================")
-# threading.Thread(target=run_command, args=(
-#     str(medipay_updater_bin_path), True,)).start()  #>
+logger.info(f"\n=============== Install medipay updater: {
+            MEDIPAY_UPDATER_FOLDER_PATH} =================")
+print(f"\n=============== Install medipay updater: {
+      MEDIPAY_UPDATER_FOLDER_PATH} =================")
+threading.Thread(target=run_command, args=(
+    str(medipay_updater_bin_path), True,)).start()  #>
 # run_command(str(medipay_updater_bin_path))
 
 logger.info(
@@ -302,7 +302,7 @@ print("================= Config auto-start configuration for MediPay, HN212 and 
 create_shortcut(medipay_bin_path, "MediPay")
 create_shortcut(api_bin_path, "API")
 # create_shortcut(cccd_bin_path, "HN212")
-# create_shortcut(medipay_updater_bin_path, "Auto_Updater")
+create_shortcut(medipay_updater_bin_path, "Auto_Updater")
 
 filenames = ["MediPay.lnk", "API.lnk"]
 # filenames = ["MediPay.lnk", "API.lnk", "HN212.lnk", "Auto_Updater.lnk"]
