@@ -113,7 +113,7 @@ def handle_changed_files():
             kill_process(AUTO_UPDATE_SERVICE_NAME)
             extract_zip()
             # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-            subprocess.run(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+            subprocess.Popen(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
