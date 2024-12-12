@@ -8,6 +8,7 @@ import logger as setup_logger
 import os
 import config
 import threading
+import zipfile
 
 GIT_KIOSK_TAG_API = config.GIT_KIOSK_TAG_API
 GIT_REPO_DIR = config.GIT_REPO_DIR
@@ -76,12 +77,36 @@ def pull_changes():
         logger.info("Pulling latest changes...")
         os.chdir(SETUP_FOLDER_PATH)
         subprocess.run(["git", "pull"], check=True)
+
         print("Successfully pulled the latest changes.")
         logger.info("Successfully pulled the latest changes.")
+        
+        extract_zip()
+        
     except subprocess.CalledProcessError as e:
         print(f"Error while pulling changes: {e}")
         logger.error(f"Error while pulling changes: {e}")
  
+def extract_zip():
+    logger.info("Extracting ZIP files in the directory...")
+    print("Extracting ZIP files in the directory...")
+    for root, _, files in os.walk(SETUP_FOLDER_PATH):
+        for file in files:
+            if file.endswith(".zip"):
+                zip_path = os.path.join(root, file)
+                extract_to = os.path.join(root, os.path.splitext(file)[0])
+                os.makedirs(extract_to, exist_ok=True)
+                try:
+                    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                        zip_ref.extractall(extract_to)
+                        logger.info(f"Extracted: {zip_path} -> {extract_to}")
+                        print(f"Extracted: {zip_path} -> {extract_to}")
+                except zipfile.BadZipFile:
+                    logger.info(f"Error: {zip_path} is not a valid ZIP file.")
+                    print(f"Error: {zip_path} is not a valid ZIP file.")
+    logger.info("Done.")
+    print("Done.")
+
 def handle_changed_files():
     os.chdir(SETUP_FOLDER_PATH)
     result = subprocess.run(
