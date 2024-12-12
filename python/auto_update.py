@@ -110,12 +110,9 @@ def handle_changed_files():
         if file == AUTO_UPDATE_FILE:
             print(f"----> File: {AUTO_UPDATE_FILE} was changed")
             logger.info(f"----> File: {AUTO_UPDATE_FILE} was changed")
-            extract_zip()
             kill_process(AUTO_UPDATE_SERVICE_NAME)
+            extract_zip()
             threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-
-        # elif file == 'download_driver.py.gpg':
-        #     print("Processing changes for download_driver.py.gpg")
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
