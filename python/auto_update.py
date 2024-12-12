@@ -81,7 +81,6 @@ def pull_changes():
         print("Successfully pulled the latest changes.")
         logger.info("Successfully pulled the latest changes.")
         
-        extract_zip()
         
     except subprocess.CalledProcessError as e:
         print(f"Error while pulling changes: {e}")
@@ -118,6 +117,7 @@ def handle_changed_files():
         if file == AUTO_UPDATE_FILE:
             print(f"----> File: {AUTO_UPDATE_FILE} was changed")
             logger.info(f"----> File: {AUTO_UPDATE_FILE} was changed")
+            extract_zip()
             kill_process(AUTO_UPDATE_SERVICE_NAME)
             threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
 
