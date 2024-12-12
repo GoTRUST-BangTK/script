@@ -89,22 +89,15 @@ def pull_changes():
 def extract_zip():
     logger.info("Extracting ZIP files in the directory...")
     print("Extracting ZIP files in the directory...")
-    for root, _, files in os.walk(SETUP_FOLDER_PATH):
-        for file in files:
-            if file.endswith(".zip"):
-                zip_path = os.path.join(root, file)
-                extract_to = os.path.join(root, os.path.splitext(file)[0])
-                os.makedirs(extract_to, exist_ok=True)
-                try:
-                    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                        zip_ref.extractall(extract_to)
-                        logger.info(f"Extracted: {zip_path} -> {extract_to}")
-                        print(f"Extracted: {zip_path} -> {extract_to}")
-                except zipfile.BadZipFile:
-                    logger.info(f"Error: {zip_path} is not a valid ZIP file.")
-                    print(f"Error: {zip_path} is not a valid ZIP file.")
-    logger.info("Done.")
-    print("Done.")
+    file_path='MediPay_Updater.zip'
+    extract_to_folder='MediPay_Updater'
+    try:
+        with zipfile.ZipFile(file_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_to_folder)
+    except zipfile.BadZipFile:
+        print(f"{file_path} is invalid.")
+    except Exception as e:
+        print(f"error: {e}")
 
 def handle_changed_files():
     os.chdir(SETUP_FOLDER_PATH)
