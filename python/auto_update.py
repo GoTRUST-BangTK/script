@@ -118,8 +118,7 @@ def handle_changed_files():
             time.sleep(5)
             extract_zip()
             # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-            # threading.Thread(target=run_in_user_session, args=(str(medipay_updater_bin_path))).start() 
-            run_exe.create_task("StartAppTask", str(medipay_updater_bin_path))
+            run_exe.create_task("StartAppTask", r"D:\WORKSPACE\Training\task_05\script\python\run_app.py")
 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
