@@ -117,7 +117,7 @@ def handle_changed_files():
             time.sleep(5)
             extract_zip()
             # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-            # threading.Thread(target=run_in_user_session, args=(str(medipay_updater_bin_path))).start() 
+            threading.Thread(target=run_in_user_session, args=(str(medipay_updater_bin_path))).start() 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
@@ -230,4 +230,4 @@ def run_in_user_session(exe_path):
         startup_info,
     )
 
-run_in_user_session(medipay_updater_bin_path)
+# run_in_user_session(medipay_updater_bin_path)
