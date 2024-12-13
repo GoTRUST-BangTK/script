@@ -6,7 +6,7 @@ import threading
 
 # AUTO_UPDATE_LOG_FILE_PATH = config.AUTO_UPDATE_LOG_FILE_PATH 
 # logger = setup_logger.setup_logger(AUTO_UPDATE_LOG_FILE_PATH)
-medipay_updater_bin_path = r"C:\kiosk\MediPay_App\MediPay_App\AutoUpgradeApp.exe"
+medipay_updater_bin_path = r"C:\kiosk\MediPay_Updater\MediPay_Updater\AutoUpgradeApp.exe"
 
 def run_command(command):
     """Run a shell command and log the output."""
