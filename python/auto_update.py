@@ -4,6 +4,7 @@ import subprocess
 import winreg
 import config
 import psutil
+import shutil
 import logger as setup_logger
 import os
 import config
@@ -91,6 +92,7 @@ def extract_zip():
     print("Extracting ZIP files in the directory...")
     file_path='MediPay_Updater.zip'
     extract_to_folder='MediPay_Updater'
+    shutil.rmtree(extract_to_folder)
     try:
         with zipfile.ZipFile(file_path, 'r') as zip_ref:
             zip_ref.extractall(extract_to_folder)
@@ -112,8 +114,8 @@ def handle_changed_files():
             logger.info(f"----> File: {AUTO_UPDATE_FILE} was changed")
             kill_process(AUTO_UPDATE_SERVICE_NAME)
             extract_zip()
-            # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-            subprocess.Popen(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+            threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
+            # subprocess.Popen(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
