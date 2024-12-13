@@ -46,6 +46,7 @@ def create_task(task_name, exe_path):
     )
     print(f"Task {task_name} đã được tạo và sẵn sàng chạy.")
 
+def run_task(task_name):
     scheduler = win32com.client.Dispatch("Schedule.Service")
     scheduler.Connect()
     root_folder = scheduler.GetFolder("\\")
