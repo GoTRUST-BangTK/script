@@ -14,7 +14,7 @@ def run_command(command):
         logger.info(f"Run in daemon mode: {medipay_updater_bin_path}")
         print("Run in daemon mode")
         subprocess.Popen(
-            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) 
+            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) 
     except Exception as e:
         logger.error(f"Failed to run command '{command}': {e}")
         print(f"Failed to run command '{command}': {e}")

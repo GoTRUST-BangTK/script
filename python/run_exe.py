@@ -24,6 +24,9 @@ def create_task(task_name, exe_path):
     task_def.Principal.UserId = os.getlogin()  # Sử dụng tài khoản người dùng hiện tại
     task_def.Principal.LogonType = 3  # Interactive Token (yêu cầu UI)
 
+    # Cấu hình task để chạy với quyền cao nhất
+    task_def.Settings.RunLevel = 1  # Chạy với quyền cao nhất (Highest Privileges)
+    
     # Cấu hình Trigger (chạy ngay lập tức)
     trigger = task_def.Triggers.Create(1)  # TASK_TRIGGER_TIME
     trigger.StartBoundary = "2024-12-13T00:00:00"  # Thời gian bất kỳ trong quá khứ (để chạy ngay)
