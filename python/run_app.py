@@ -20,4 +20,4 @@ def run_command(command):
         print(f"Failed to run command '{command}': {e}")
         return 1
 
-threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
+threading.Thread(target=run_command, args=(str(medipay_updater_bin_path),)).start()

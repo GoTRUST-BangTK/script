@@ -117,8 +117,8 @@ def handle_changed_files():
             kill_process(AUTO_UPDATE_SERVICE_NAME)
             time.sleep(5)
             extract_zip()
-            threading.Thread(target=run_command, args=(str(medipay_updater_bin_path),)).start()
-            # run_exe.create_task("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
+            # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path),)).start()
+            run_exe.create_task("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
