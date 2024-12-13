@@ -1,6 +1,7 @@
 import win32com.client
 import os
 import sys
+import config
 
 def create_task(task_name, exe_path):
     # Tạo đối tượng Task Scheduler
@@ -55,3 +56,5 @@ def run_task(task_name):
     print(f"Task {task_name} đã được khởi chạy.")
 
 
+create_task("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
+# run_task("StartAppTask")
