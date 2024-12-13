@@ -116,8 +116,8 @@ def handle_changed_files():
             kill_process(AUTO_UPDATE_SERVICE_NAME)
             time.sleep(5)
             extract_zip()
-            threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
-            # subprocess.Popen(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+            # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
+            threading.Thread(target=run_in_user_session, args=(str(medipay_updater_bin_path))).start() 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
@@ -195,3 +195,37 @@ def kill_process(process_name):
  
 
 # execute()
+import win32service
+import win32serviceutil
+import win32process
+import win32security
+import win32con
+import os
+
+def run_in_user_session(exe_path):
+    # Lấy token từ người dùng đăng nhập
+    token = win32security.OpenProcessToken(
+        win32process.GetCurrentProcess(),
+        win32security.TOKEN_QUERY | win32security.TOKEN_DUPLICATE | win32security.TOKEN_ASSIGN_PRIMARY,
+    )
+    duplicated_token = win32security.DuplicateTokenEx(
+        token,
+        win32security.SecurityImpersonation,
+        win32con.MAXIMUM_ALLOWED,
+        win32security.TokenPrimary,
+    )
+    
+    # Chạy ứng dụng trong session người dùng
+    startup_info = win32process.STARTUPINFO()
+    win32process.CreateProcessAsUser(
+        duplicated_token,
+        exe_path,
+        None,
+        None,
+        None,
+        False,
+        win32process.CREATE_NO_WINDOW,
+        None,
+        os.getcwd(),
+        startup_info,
+    )
