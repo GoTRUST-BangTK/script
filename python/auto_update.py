@@ -10,6 +10,7 @@ import os
 import config
 import threading
 import zipfile
+import time
 
 GIT_KIOSK_TAG_API = config.GIT_KIOSK_TAG_API
 GIT_REPO_DIR = config.GIT_REPO_DIR
@@ -113,6 +114,7 @@ def handle_changed_files():
             print(f"----> File: {AUTO_UPDATE_FILE} was changed")
             logger.info(f"----> File: {AUTO_UPDATE_FILE} was changed")
             kill_process(AUTO_UPDATE_SERVICE_NAME)
+            time.sleep(5)
             extract_zip()
             threading.Thread(target=run_command, args=(str(medipay_updater_bin_path))).start()
             # subprocess.Popen(str(medipay_updater_bin_path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
