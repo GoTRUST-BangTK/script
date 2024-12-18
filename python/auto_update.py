@@ -11,7 +11,7 @@ import config
 import threading
 import zipfile
 import time
-import run_exe
+import win32com.client
 
 GIT_KIOSK_TAG_API = config.GIT_KIOSK_TAG_API
 GIT_REPO_DIR = config.GIT_REPO_DIR
@@ -118,7 +118,7 @@ def handle_changed_files():
             time.sleep(5)
             extract_zip()
             # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path),)).start()
-            run_exe.run_task("StartAppTask")
+            run_task("StartAppTask")
 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
@@ -195,5 +195,12 @@ def kill_process(process_name):
     print(f"Process {process_name} not found.")
     logger.info(f"Process {process_name} not found.")
  
+def run_task(task_name):
+    scheduler = win32com.client.Dispatch("Schedule.Service")
+    scheduler.Connect()
+    root_folder = scheduler.GetFolder("\\")
+    task = root_folder.GetTask(task_name)
+    task.Run(None)
+    print(f"Task {task_name} is running")
 
 # execute() 

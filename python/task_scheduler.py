@@ -49,6 +49,50 @@ def create_task_scheduler(task_name, program_path, arguments, description, trigg
 
     print(f"Task '{task_name}' created successfully.")
 
+def create_task_run_exe(task_name, exe_path):
+    # Tạo đối tượng Task Scheduler
+    scheduler = win32com.client.Dispatch("Schedule.Service")
+    scheduler.Connect()
+
+    # Lấy thư mục gốc của Task Scheduler
+    root_folder = scheduler.GetFolder("\\")
+
+    # Xóa Task cũ (nếu tồn tại)
+    try:
+        root_folder.DeleteTask(task_name, 0)
+    except Exception as e:
+        print(f"Task {task_name} is not existing, creating")
+
+    # Tạo một task định nghĩa
+    task_def = scheduler.NewTask(0)
+
+    # Cấu hình Task (General Settings)
+    task_def.RegistrationInfo.Description = "run exe file"
+    task_def.Principal.UserId = os.getlogin()  # Sử dụng tài khoản người dùng hiện tại
+    task_def.Principal.LogonType = 3  # Interactive Token (yêu cầu UI)
+
+    task_def.Principal.RunLevel = 1   # Chạy với quyền cao nhất (Highest Privileges)
+
+    # Cấu hình Trigger (chạy ngay lập tức)
+    trigger = task_def.Triggers.Create(1)  # TASK_TRIGGER_TIME
+    trigger.StartBoundary = "2024-12-13T00:00:00"  # Thời gian bất kỳ trong quá khứ (để chạy ngay)
+
+    # Cấu hình Action (chạy app.exe)
+    action = task_def.Actions.Create(0)  # TASK_ACTION_EXEC
+    action.Path = r'C:\Python312\python.exe' #sys.executable
+    action.Arguments = exe_path
+
+    # Đăng ký Task với Task Scheduler
+    root_folder.RegisterTaskDefinition(
+        task_name,
+        task_def,
+        6,  # TASK_CREATE_OR_UPDATE
+        None,
+        None,
+        3,  # TASK_LOGON_INTERACTIVE_TOKEN
+    )
+    print(f"Task {task_name} is ready  and available to run.")
+
 
 # program_path = r"C:\Python312\python.exe"
 create_task_scheduler(
@@ -67,6 +111,8 @@ create_task_scheduler(
     triggers=[(9, 58), (11, 0)],
     # triggers=[(17, 30), (11, 0)],
 )
+
+create_task_run_exe("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
 
 # @ scheduler.NewTask
 # ? 0 = "Run Program"
