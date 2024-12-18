@@ -15,13 +15,13 @@ def create_task(task_name, exe_path):
     try:
         root_folder.DeleteTask(task_name, 0)
     except Exception as e:
-        print(f"Task {task_name} không tồn tại, tiếp tục tạo mới.")
+        print(f"Task {task_name} is not existing, creating")
 
     # Tạo một task định nghĩa
     task_def = scheduler.NewTask(0)
 
     # Cấu hình Task (General Settings)
-    task_def.RegistrationInfo.Description = "Task chạy app.exe từ service"
+    task_def.RegistrationInfo.Description = "run exe file"
     task_def.Principal.UserId = os.getlogin()  # Sử dụng tài khoản người dùng hiện tại
     task_def.Principal.LogonType = 3  # Interactive Token (yêu cầu UI)
 
@@ -45,7 +45,7 @@ def create_task(task_name, exe_path):
         None,
         3,  # TASK_LOGON_INTERACTIVE_TOKEN
     )
-    print(f"Task {task_name} đã được tạo và sẵn sàng chạy.")
+    print(f"Task {task_name} is ready  and available to run.")
 
 def run_task(task_name):
     scheduler = win32com.client.Dispatch("Schedule.Service")
@@ -53,7 +53,7 @@ def run_task(task_name):
     root_folder = scheduler.GetFolder("\\")
     task = root_folder.GetTask(task_name)
     task.Run(None)
-    print(f"Task {task_name} đã được khởi chạy.")
+    print(f"Task {task_name} is running")
 
 
 create_task("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
