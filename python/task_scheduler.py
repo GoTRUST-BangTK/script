@@ -61,6 +61,7 @@ def create_task_run_exe(task_name, exe_path):
     # Xóa Task cũ (nếu tồn tại)
     try:
         root_folder.DeleteTask(task_name, 0)
+        print(f"Deleted existing task '{task_name}'.")
     except Exception as e:
         print(f"Task {task_name} is not existing, creating")
 
@@ -104,14 +105,14 @@ create_task_scheduler(
     triggers=[(14, 0), (18, 0)],
 )
 
-create_task_scheduler(
-    task_name="Shutdown",
-    program_path=sys.executable,
-    arguments=str(config.SHUT_DOWN_FILE_PATH),
-    description="Task to run script daily at 2:00 PM and 6:00 PM",
-    triggers=[(9, 58), (11, 0)],
-    # triggers=[(17, 30), (11, 0)],
-)
+# create_task_scheduler(
+#     task_name="Shutdown",
+#     program_path=sys.executable,
+#     arguments=str(config.SHUT_DOWN_FILE_PATH),
+#     description="Task to run script daily at 2:00 PM and 6:00 PM",
+#     triggers=[(9, 58), (11, 0)],
+#     # triggers=[(17, 30), (11, 0)],
+# )
 
 create_task_run_exe("Start_AutoUpdate_App", str(config.AUTO_UPGRADE_FILE_PATH))
 
