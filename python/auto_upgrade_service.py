@@ -8,7 +8,7 @@ from SMWinservice import SMWinservice
 import win32service
 import win32serviceutil
 import sys
-import auto_update
+import task_05.script.python.auto_upgrade as auto_upgrade
 import config
 
 AUTO_UPDATE_SERVICE_NAME = config.AUTO_UPDATE_SERVICE_NAME
@@ -23,11 +23,11 @@ class PythonService(SMWinservice):
 
     def stop(self):
         self.isrunning = False 
-        auto_update.kill_process("pythonservice") 
+        auto_upgrade.kill_process("pythonservice") 
 
     def main(self):
         if self.isrunning:
-            auto_update.execute() 
+            auto_upgrade.execute() 
 
 
 if __name__ == '__main__':
