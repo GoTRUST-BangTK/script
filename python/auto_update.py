@@ -158,7 +158,7 @@ def check_new_tag():
                 print(f"================== Current tag: {last_checked_tag} ================== \nWaiting for new tag to be pushed in repo")
                 logger.info(f"================== Current tag: {last_checked_tag} ================== \nWaiting for new tag to be pushed in repo. ")
             
-                send_log(f"Update successfully. Current tag: {last_checked_tag}")
+                send_log(f"Auto Upgrade App is updated successfully. Current release: {last_checked_tag}")
             elif latest_tag == None:
                 print("No new tag found.")
                 logger.info("No new tag found.")
