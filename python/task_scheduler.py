@@ -2,6 +2,7 @@ import win32com.client
 from datetime import datetime, timedelta
 import sys
 import config
+import os
 
 
 def create_task_scheduler(task_name, program_path, arguments, description, triggers):
