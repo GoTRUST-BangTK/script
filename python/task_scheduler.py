@@ -112,7 +112,7 @@ create_task_scheduler(
     # triggers=[(17, 30), (11, 0)],
 )
 
-create_task_run_exe("StartAppTask", str(config.AUTO_UPGRADE_FILE_PATH))
+create_task_run_exe("Start_AutoUpdate_App", str(config.AUTO_UPGRADE_FILE_PATH))
 
 # @ scheduler.NewTask
 # ? 0 = "Run Program"
