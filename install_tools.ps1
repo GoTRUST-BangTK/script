@@ -136,9 +136,9 @@ function Run-Script {
 
     if ($env:TEST -eq 'true') {
         Write-Output_ "Install and start python service."
-        python python_service.py stop
-        python python_service.py --startup=auto install
-        python python_service.py start
+        python auto_upgrade_service.py stop
+        python auto_upgrade_service.py --startup=auto install
+        python auto_upgrade_service.py start
 
         Write-Output_ "Install task scheduler for sending log."
         python task_scheduler.py

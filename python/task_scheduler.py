@@ -81,7 +81,7 @@ def create_task_run_exe(task_name, exe_path):
 
     # Cấu hình Action (chạy app.exe)
     action = task_def.Actions.Create(0)  # TASK_ACTION_EXEC
-    action.Path = r'C:\Python312\python.exe' #sys.executable
+    action.Path = sys.executable
     action.Arguments = exe_path
 
     # Đăng ký Task với Task Scheduler

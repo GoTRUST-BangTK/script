@@ -8,7 +8,7 @@ from SMWinservice import SMWinservice
 import win32service
 import win32serviceutil
 import sys
-import task_05.script.python.auto_upgrade as auto_upgrade
+import auto_upgrade
 import config
 
 AUTO_UPDATE_SERVICE_NAME = config.AUTO_UPDATE_SERVICE_NAME
