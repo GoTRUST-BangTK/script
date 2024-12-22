@@ -118,20 +118,18 @@ def handle_changed_files():
             time.sleep(5)
             extract_zip()
             # threading.Thread(target=run_command, args=(str(medipay_updater_bin_path),)).start()
-            run_task("StartAppTask")
+            run_task("Start_AutoUpdate_App")
 
         else:
             print(f"----> File: {file} has changed but no specific handler.")
             logger.info(f"----> File: {file} has changed but no specific handler.")
 
-def send_log():
-    files = {
+def send_log(msg):
+    data = {
         'chat_id': (None, '-4583989930'),
-        'document': open(AUTO_UPDATE_LOG_FILE_PATH, 'rb'),
+        'text': msg
     }
-    response = requests.post(TELEGRAM_API,
-                             files=files,
-                             )
+    response = requests.post(TELEGRAM_API, data=data)
     print("Send log to telegram: ", response.status_code, response.text)
 
 
@@ -157,9 +155,9 @@ def check_new_tag():
                 create_or_update_registry_key(latest_tag, "tag")
                 last_checked_tag = get_registry_tag_value('tag')
                 print(f"================== Current tag: {last_checked_tag} ================== \nWaiting for new tag to be pushed in repo")
-                logger.info(f"================== Current tag: {last_checked_tag} ================== \nWaiting for new tag to be pushed in repo")
+                logger.info(f"================== Current tag: {last_checked_tag} ================== \nWaiting for new tag to be pushed in repo. ")
             
-                # send_log()
+                send_log(f"Update successfully. Current tag: {last_checked_tag}")
             elif latest_tag == None:
                 print("No new tag found.")
                 logger.info("No new tag found.")
