@@ -18,7 +18,8 @@ GIT_REPO_DIR = config.GIT_REPO_DIR
 AUTO_UPGRADE_REGISTRY_PATH = config.AUTO_UPGRADE_REGISTRY_PATH
 TIME_INTERVAL = config.TIME_INTERVAL
 AUTO_UPDATE_LOG_FILE_PATH = config.AUTO_UPDATE_LOG_FILE_PATH 
-TELEGRAM_API = config.TELEGRAM_API
+TELEGRAM_API_SEND_MSG = config.TELEGRAM_API_SEND_MSG
+TELEGRAM_CHAT_ID=config.TELEGRAM_CHAT_ID
 GITHUB_TOKEN = config.GITHUB_TOKEN
 last_checked_tag = None
 SETUP_FOLDER_PATH = config.SETUP_FOLDER_PATH
@@ -126,10 +127,10 @@ def handle_changed_files():
 
 def send_log(msg):
     data = {
-        'chat_id': (None, '-4583989930'),
+        'chat_id': (None, TELEGRAM_CHAT_ID),
         'text': msg
     }
-    response = requests.post(TELEGRAM_API, data=data)
+    response = requests.post(TELEGRAM_API_SEND_MSG, data=data)
     print("Send log to telegram: ", response.status_code, response.text)
 
 

@@ -4,7 +4,8 @@ import config
 import requests
 
 API_LOG_FOLDER_PATH = r"d:\log"  # config.API_LOG_FOLDER_PATH
-TELEGRAM_API = config.TELEGRAM_API
+TELEGRAM_API_SEND_FILE = config.TELEGRAM_API_SEND_FILE
+TELEGRAM_CHAT_ID=config.TELEGRAM_CHAT_ID
 
 
 def get_files_created_today(directory):
@@ -31,7 +32,7 @@ def send_log(file_path):
         "document": open(file_path, "rb"),
     }
     response = requests.post(
-        TELEGRAM_API,
+        TELEGRAM_API_SEND_FILE,
         files=files,
     )
     print("Send log to telegram: ", response.status_code, response.text)

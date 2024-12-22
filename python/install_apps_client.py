@@ -17,8 +17,7 @@ import winreg
 
 KIOSK_REPO_URL = config.KIOSK_REPO_URL
 SETUP_FOLDER_PATH = config.SETUP_FOLDER_PATH
-INSTALL_APP_LOG_FILE_PATH = config.INSTALL_APP_LOG_FILE_PATH
-TELEGRAM_API = config.TELEGRAM_API
+INSTALL_APP_LOG_FILE_PATH = config.INSTALL_APP_LOG_FILE_PATH 
 
 KIOSK_FOLDER_PATH = config.KIOSK_FOLDER_PATH
 API_FOLDER_PATH = config.API_FOLDER_PATH
@@ -315,16 +314,4 @@ for filename, exists in check_result.items():
     else:
         logger.info(f"Creating {filename} shortcut failed.")
         print(f"Create {filename} shortcut failed.")
-
-# # @ Send log to telegram
-# def send_log():
-#     files = {
-#         'chat_id': (None, '-4583989930'),
-#         'document': open(INSTALL_APP_LOG_FILE_PATH, 'rb'),
-#     }
-#     response = requests.post(TELEGRAM_API,
-#                              files=files,
-#                              )
-#     print("Send log to telegram: ", response.status_code, response.text)
-
-# send_log()
+ 
