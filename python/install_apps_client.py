@@ -28,7 +28,7 @@ API_LOCAL_FOLDER_PATH = config.API_LOCAL_FOLDER_PATH
 MEDIPAYAPP_FOLDER_PATH = config.MEDIPAYAPP_FOLDER_PATH
 CCCD_SETUP_FOLDER_PATH = config.CCCD_SETUP_FOLDER_PATH
 CCCD_SETUP_FOLDER_NAME = config.CCCD_SETUP_FOLDER_NAME
-CCCD_FOLDER_PATH = config.CCCD_FOLDER_PATH
+# CCCD_FOLDER_PATH = config.CCCD_FOLDER_PATH
 REDIST_SETUP_PATH = config.REDIST_SETUP_PATH
 PRINTER_FOLDER_PATH = config.PRINTER_FOLDER_PATH
 REGEDIT_FILE_PATH = config.REGEDIT_FILE_PATH
@@ -130,14 +130,12 @@ def extract_zip():
 
 
 fetch_repo(KIOSK_REPO_URL, SETUP_FOLDER_PATH)
-logger.info(f"Downloading APP_HN212 from Google Driver...")
-print(f"Downloading APP_HN212 from Google Driver...")
-download_driver.download_file('App_HN212.zip',SETUP_FOLDER_PATH)
+logger.info(f"Downloading API_HN212 from Google Driver...")
+print(f"Downloading API_HN212 from Google Driver...")
+download_driver.download_file('API_HN212.zip',SETUP_FOLDER_PATH)
 extract_zip()
 # threading.Thread(target=download_driver.download_file, args=(
 #     CCCD_SETUP_FOLDER_NAME, SETUP_FOLDER_PATH)).start()
-
-
 
 def find_file(parent_path="C:/Setup/Support Exe", pattern="*"):
     for file in glob.glob(os.path.join(parent_path, '*')):
@@ -145,12 +143,10 @@ def find_file(parent_path="C:/Setup/Support Exe", pattern="*"):
             file = os.path.normpath(file)
             return file
 
-
 medipay_bin_path = find_file(MEDIPAY_FOLDER_PATH, file_exe_pattern)
 api_bin_path = find_file(API_FOLDER_PATH, file_exe_pattern)
-cccd_bin_path = find_file(CCCD_FOLDER_PATH, file_exe_pattern)
-medipay_updater_bin_path = find_file(
-    MEDIPAY_UPDATER_FOLDER_PATH, file_exe_pattern)
+# cccd_bin_path = find_file(CCCD_FOLDER_PATH, file_exe_pattern) #? skip
+medipay_updater_bin_path = find_file(MEDIPAY_UPDATER_FOLDER_PATH, file_exe_pattern)
 
 logger.info("=============== Check path is existing =================")
 print("=============== Check path is existing =================")
@@ -180,13 +176,13 @@ medipay_source_folder = SETUP_FOLDER_PATH / MEDIPAYAPP_FOLDER_PATH
 shutil.copytree(medipay_source_folder, MEDIPAY_FOLDER_PATH, dirs_exist_ok=True)
 
 
-cccd_setup_bin_path = find_file(CCCD_SETUP_FOLDER_PATH, file_exe_pattern)
-logger.info(f"\n=============== Install CCCD Reader App: {
-            cccd_setup_bin_path} =================")
-print(f"\n=============== Install CCCD Reader App: {
-      cccd_setup_bin_path} =================")
-# threading.Thread(target=run_command  , args=(str(cccd_setup_bin_path),)).start() #>
-run_command(str(cccd_setup_bin_path))
+# cccd_setup_bin_path = find_file(CCCD_SETUP_FOLDER_PATH, file_exe_pattern)
+# logger.info(f"\n=============== Install CCCD Reader App: {
+#             cccd_setup_bin_path} =================")
+# print(f"\n=============== Install CCCD Reader App: {
+#       cccd_setup_bin_path} =================")
+# # threading.Thread(target=run_command  , args=(str(cccd_setup_bin_path),)).start() #>
+# run_command(str(cccd_setup_bin_path))
 
 
 logger.info(
@@ -201,35 +197,33 @@ else:
 
 
 redist_setup_bin_path = find_file(REDIST_SETUP_PATH, file_exe_pattern)
-logger.info(f"\n=============== Install VC_redist: {
-            redist_setup_bin_path} =================")
-print(f"\n=============== Install VC_redist: {
-      redist_setup_bin_path} =================")
+logger.info(f"\n=============== Install VC_redist: {redist_setup_bin_path} =================")
+print(f"\n=============== Install VC_redist: {redist_setup_bin_path} =================")
 # threading.Thread(target=run_command  , args=(str(redist_setup_bin_path),)).start() #>
 run_command(str(redist_setup_bin_path))
 
-logger.info(f"\n=============== Install medipay updater: {
-            MEDIPAY_UPDATER_FOLDER_PATH} =================")
-print(f"\n=============== Install medipay updater: {
-      MEDIPAY_UPDATER_FOLDER_PATH} =================")
-threading.Thread(target=run_command, args=(
-    str(medipay_updater_bin_path), True,)).start()  #>
+# logger.info(f"\n=============== Install medipay updater: {
+#             MEDIPAY_UPDATER_FOLDER_PATH} =================")
+# print(f"\n=============== Install medipay updater: {
+#       MEDIPAY_UPDATER_FOLDER_PATH} =================")
+# threading.Thread(target=run_command, args=(
+#     str(medipay_updater_bin_path), True,)).start()  #>
 # run_command(str(medipay_updater_bin_path))
 
-logger.info(
-    "=============== Check if printer w80 is already installed or not =================")
-print("=============== Check if printer w80 is already installed or not =================")
-printer_name = "w80"
-printers = subprocess.run(
-    ["wmic", "printer", "get", "name"], capture_output=True, text=True)
-if printer_name not in printers.stdout:
-    logger.info(" Printer w80 is not installed yet. Installing...")
-    print(" Printer w80 is not installed yet. Installing...")
-    run_command([str(PRINTER_FOLDER_PATH / "Uninstaller.exe")])  # >
-    run_command([str(PRINTER_FOLDER_PATH / "PrinterInstall.exe")])  # >
-else:
-    logger.info("Printer w80 is already installed. ")
-    print("Printer w80 is already installed. ")
+# logger.info(
+#     "=============== Check if printer w80 is already installed or not =================")
+# print("=============== Check if printer w80 is already installed or not =================")
+# printer_name = "w80"
+# printers = subprocess.run(
+#     ["wmic", "printer", "get", "name"], capture_output=True, text=True)
+# if printer_name not in printers.stdout:
+#     logger.info(" Printer w80 is not installed yet. Installing...")
+#     print(" Printer w80 is not installed yet. Installing...")
+#     run_command([str(PRINTER_FOLDER_PATH / "Uninstaller.exe")])  # >
+#     run_command([str(PRINTER_FOLDER_PATH / "PrinterInstall.exe")])  # >
+# else:
+#     logger.info("Printer w80 is already installed. ")
+#     print("Printer w80 is already installed. ")
 
 
 def check_registry_key_exists(path):
@@ -291,8 +285,8 @@ def create_shortcut(target, shortcut_name):
 
 
 logger.info(
-    "================= Config auto-start configuration for MediPay, HN212 and API ================= ")
-print("================= Config auto-start configuration for MediPay, HN212 and API ================= ")
+    "================= Config auto-start ================= ")
+print("================= Config auto-start ================= ")
 # if not  os.path.isfile(medipay_bin_path):
 #     print(f"Target path does not exist: {medipay_bin_path}")
 # if not os.path.isfile(medipay_bin_path):

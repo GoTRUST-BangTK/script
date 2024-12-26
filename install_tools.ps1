@@ -1,6 +1,5 @@
  # $($args[0])"
 
-
 $packages = @("python", "gnupg", "git")
 
 $repo_url = "https://github.com/GoTRUST-BangTK/script.git"
@@ -197,5 +196,5 @@ Install-Choco
 Install-ChocoPackages
 Run-Script  
 Disable-Window-Update
-Disable-Window-Installer 
+# Disable-Window-Installer 
 Disable-Screen-Edge-Swipe 
