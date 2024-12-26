@@ -291,8 +291,8 @@ print("================= Config auto-start ================= ")
 #     print(f"Target path does not exist: {medipay_bin_path}")
 # if not os.path.isfile(medipay_bin_path):
 #     print(f"Target path does not exist: {api_bin_path}")
-create_shortcut(medipay_bin_path, config.MEDIPAY_EXE)
-create_shortcut(api_bin_path, config.API_EXE)
+create_shortcut(config.MEDIPAY_EXE, "MediPay")
+create_shortcut(config.API_EXE, "API")
 # create_shortcut(cccd_bin_path, "HN212")
 # create_shortcut(medipay_updater_bin_path, "Auto_Updater")
 
