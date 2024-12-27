@@ -22,5 +22,5 @@ function Clean {
     Remove-Item C:\install_tool.log -ErrorAction SilentlyContinue
 }
 
-Send-Log
+# Send-Log
 Clean
