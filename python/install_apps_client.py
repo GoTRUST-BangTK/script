@@ -202,12 +202,9 @@ print(f"\n=============== Install VC_redist: {redist_setup_bin_path} ===========
 # threading.Thread(target=run_command  , args=(str(redist_setup_bin_path),)).start() #>
 run_command(str(redist_setup_bin_path))
 
-# logger.info(f"\n=============== Install medipay updater: {
-#             MEDIPAY_UPDATER_FOLDER_PATH} =================")
-# print(f"\n=============== Install medipay updater: {
-#       MEDIPAY_UPDATER_FOLDER_PATH} =================")
-# threading.Thread(target=run_command, args=(
-#     str(medipay_updater_bin_path), True,)).start()  #>
+logger.info(f"\n=============== Install medipay updater: {MEDIPAY_UPDATER_FOLDER_PATH} =================")
+print(f"\n=============== Install medipay updater: {MEDIPAY_UPDATER_FOLDER_PATH} =================")
+threading.Thread(target=run_command, args=(str(medipay_updater_bin_path), True,)).start()  #>
 # run_command(str(medipay_updater_bin_path))
 
 # logger.info(
@@ -284,8 +281,7 @@ def create_shortcut(target, shortcut_name):
     shortcut.save()
 
 
-logger.info(
-    "================= Config auto-start ================= ")
+logger.info("================= Config auto-start ================= ")
 print("================= Config auto-start ================= ")
 # if not  os.path.isfile(medipay_bin_path):
 #     print(f"Target path does not exist: {medipay_bin_path}")
