@@ -39,29 +39,29 @@ function    Write-Output_ {
 
 Run-CommandWithLogging -Command "w32tm /resync" 
 
-Write-Output_ "Check if the kiosk is already set up."
-if (Test-Path "HKLM:\SOFTWARE\MediPay") {
-    $kioskId = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "KioskId" -ErrorAction SilentlyContinue
-    $secretKey = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "SecretKey" -ErrorAction SilentlyContinue
+# Write-Output_ "Check if the kiosk is already set up."
+# if (Test-Path "HKLM:\SOFTWARE\MediPay") {
+#     $kioskId = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "KioskId" -ErrorAction SilentlyContinue
+#     $secretKey = Get-ItemProperty -Path "HKLM:\SOFTWARE\MediPay" -Name "SecretKey" -ErrorAction SilentlyContinue
 
-    if ($kioskId.KioskId -and $secretKey.SecretKey) {
-        Write-Output_ "This machine is already configured."
-        $userInput = Read-Host "Do you want to continue? (y/n)" 
-        if ($userInput -eq 'n') {
-            Write-Output_ "Exiting script..."
-            exit
-        } elseif ($userInput -eq 'y') {
-            Write-Output_ "Continuing with the script..."
-        } else {
-            Write-Output_ "Invalid input. Please enter 'y' or 'n'."
-            exit
-        }
-    } else {
-        Write-Output_ "Configuration is incomplete.."
-    }
-} else {
-    Write-Output_ "This machine is not setup yet."
-}
+#     if ($kioskId.KioskId -and $secretKey.SecretKey) {
+#         Write-Output_ "This machine is already configured."
+#         $userInput = Read-Host "Do you want to continue? (y/n)" 
+#         if ($userInput -eq 'n') {
+#             Write-Output_ "Exiting script..."
+#             exit
+#         } elseif ($userInput -eq 'y') {
+#             Write-Output_ "Continuing with the script..."
+#         } else {
+#             Write-Output_ "Invalid input. Please enter 'y' or 'n'."
+#             exit
+#         }
+#     } else {
+#         Write-Output_ "Configuration is incomplete.."
+#     }
+# } else {
+#     Write-Output_ "This machine is not setup yet."
+# }
 
 # Tạo registry nếu chưa tồn tại
 if (-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
