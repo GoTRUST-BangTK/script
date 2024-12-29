@@ -165,7 +165,10 @@ function Config-Kiosk {
 
 function Hide-Taskbar {
     # Note: change $v[8]=3 to $v[8]=2 in the commands to undo this change
-    &{$p='HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3';$v=(Get-ItemProperty -Path $p).Settings;$v[8]=2;&Set-ItemProperty -Path $p -Name Settings -Value $v;&Stop-Process -f -ProcessName explorer}
+    $p='HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'
+    $v=(Get-ItemProperty -Path $p).Settings;$v[8]=3
+    Set-ItemProperty -Path $p -Name Settings -Value $v
+    # Stop-Process -f -ProcessName explorer}
 }
 
 function Set-Vietnamese-Language {
