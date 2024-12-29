@@ -60,7 +60,7 @@ function Download-Drive-Extract{
         $fileName = $file.FileName
         $extractPath = $file.ExtractPath
         $ProgressPreference = 'SilentlyContinue'
-        
+
         Run-CommandWithLogging -Command "Invoke-WebRequest -Uri $uri -OutFile $fileName"
         Run-CommandWithLogging -Command "Expand-Archive -Path $fileName -DestinationPath $extractPath -Force"
         Run-CommandWithLogging -Command "Remove-Item -Path $fileName -Force"
@@ -81,6 +81,8 @@ function Download-Drive-Extract{
         Write-Host "Path $MEDIPAY_FOLDER_PATH\MediPay_App is not existing, skipping"
     }
 }
+
+Run-CommandWithLogging -Command "w32tm /resync" 
 
 function Execute{
     $executables = @(
