@@ -1,5 +1,5 @@
  # $($args[0])"
-
+ 
 $LogFilePath = "c:\install_apps.log"
 $KIOSK_SERVICE_PATH = "C:\KIOSKService"
 $API_FOLDER_PATH = "C:\KIOSKService\API"
@@ -180,14 +180,6 @@ function Disable-Window-Update {
     Run-CommandWithLogging -Command "sc.exe stop wuauserv "
     Write-Output_ "[+] Check Windows Update Service state"
     Run-CommandWithLogging -Command "sc.exe query wuauserv | findstr 'STATE'"
-}
-
-function Disable-Window-Firewall {
-    Run-CommandWithLogging -Command "netsh advfirewall set all profiles state off" 
-}
-
-function Disable-Window-Defender {
-    Run-CommandWithLogging -Command "Set-MpPreference -DisableRealtimeMonitoring $true" 
 }
 
 function Disable-Window-Installer {
