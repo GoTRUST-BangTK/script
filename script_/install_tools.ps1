@@ -90,6 +90,7 @@ function Download-Drive-Extract{
         $uri = $file.Uri
         $fileName = $file.FileName
         $extractPath = $file.ExtractPath
+        $ProgressPreference = 'SilentlyContinue'
         Run-CommandWithLogging -Command "Invoke-WebRequest -Uri $uri -OutFile $fileName"
         Run-CommandWithLogging -Command "Expand-Archive -Path $fileName -DestinationPath $extractPath -Force"
         Run-CommandWithLogging -Command "Remove-Item -Path $fileName -Force"
@@ -235,6 +236,7 @@ function Disable-Screen-Edge-Swipe {
 
 #@ Call the functions
 Download-Drive-Extract
+Config-Kiosk
 Execute
 Disable-Window-Update
 Disable-Window-Installer 
