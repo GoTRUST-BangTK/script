@@ -60,6 +60,7 @@ function Download-Drive-Extract{
         $fileName = $file.FileName
         $extractPath = $file.ExtractPath
         $ProgressPreference = 'SilentlyContinue'
+        
         Run-CommandWithLogging -Command "Invoke-WebRequest -Uri $uri -OutFile $fileName"
         Run-CommandWithLogging -Command "Expand-Archive -Path $fileName -DestinationPath $extractPath -Force"
         Run-CommandWithLogging -Command "Remove-Item -Path $fileName -Force"
