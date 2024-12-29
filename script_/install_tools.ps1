@@ -235,10 +235,10 @@ function Disable-Screen-Edge-Swipe {
 
 
 #@ Call the functions
+Download-Drive-Extract
+Execute
 Disable-Window-Update
 Disable-Window-Installer 
 Disable-Screen-Edge-Swipe 
 Hide-Taskbar
 Set-Vietnamese-Language
-Download-Drive-Extract
-Execute
