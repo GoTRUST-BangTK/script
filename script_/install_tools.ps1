@@ -1,11 +1,10 @@
  # $($args[0])"
-$WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
-$AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
-$LogFilePath = "c:\install_apps.log"
 
+$LogFilePath = "c:\install_apps.log"
 $KIOSK_SERVICE_PATH = "C:\KIOSKService"
 $API_FOLDER_PATH = "C:\KIOSKService\API"
 $MEDIPAY_FOLDER_PATH = "C:\KIOSKService\Medipay"
+
 New-Item -Path $API_FOLDER_PATH -ItemType Directory -Force
 New-Item -Path $MEDIPAY_FOLDER_PATH -ItemType Directory -Force
 
@@ -32,37 +31,7 @@ function Write-Output_ {
     }
 } 
 
-Run-CommandWithLogging -Command "w32tm /resync" 
-
-# # Tạo registry nếu chưa tồn tại
-# if (-not (Test-Path -Path "HKLM:SOFTWARE\AutoUpgrade")) {
-#     Write-Output_ "Create HKLM:SOFTWARE\AutoUpgrade Registry"
-#     Run-CommandWithLogging -Command "New-Item -Path 'HKLM:SOFTWARE\AutoUpgrade' -Force" 
-# }
-
 function Download-Drive-Extract{
-    # $files = @(
-    #     @{
-    #         Uri = 'https://drive.usercontent.google.com/download?id=1nZkm1KEtouJG6LOYvuLAVYp36T4d2nkT&export=download&authuser=0&confirm=t&uuid=e3ea8482-5631-4237-ad8d-ba45a899ae81&at=APvzH3qiqMWBi73KE6Ly0QXYzsb6:1735447023391'
-    #         FileName = 'API_HN212.zip'
-    #         ExtractPath = "C:\KIOSKService\API"
-    #     },
-    #     @{
-    #         Uri = 'https://drive.usercontent.google.com/download?id=1vfBK3ZlBdpLpDB2gb1LtL2u_N9BA7Zpm&export=download&authuser=0&confirm=t&uuid=c5c20cff-0c1e-4063-9fca-fe5933524284&at=APvzH3rWG57lRpIM9oNHGIky8Luu:1735448696209'
-    #         FileName = 'MediPay_App.zip'
-    #         ExtractPath = "C:\KIOSKService\Medipay"
-    #     },
-    #     @{
-    #         Uri = 'https://drive.usercontent.google.com/download?id=1BvxFA_QOhX07JPHMnqC3UmJy-8rq6XIf&export=download&authuser=0&confirm=t&uuid=6cdcc5fe-2cb0-420b-b372-3b138fe16672&at=APvzH3oOVSYIeS3kmowrYwovFh97:1735448764680'
-    #         FileName = 'MediPay_Updater.zip'
-    #         ExtractPath = 'C:\KIOSKService'
-    #     },
-    #     @{
-    #         Uri = 'https://drive.usercontent.google.com/download?id=1pfoMHmxmhXrrlSf6q644gJkiLNR6EY6e&export=download&authuser=0&confirm=t&uuid=2fa238c3-2580-4138-a10b-1cbe0bf4b398&at=APvzH3ocBlokJHWpwZUEPm2T0R_d:1735448767165'
-    #         FileName = 'Support_Exe.zip'
-    #         ExtractPath = "Support_Exe"
-    #     }
-    # ) 
     $files = @(
         @{
             Uri = 'https://drive.usercontent.google.com/download?id=1nZkm1KEtouJG6LOYvuLAVYp36T4d2nkT`&export=download`&authuser=0`&confirm=t`&uuid=e3ea8482-5631-4237-ad8d-ba45a899ae81`&at=APvzH3qiqMWBi73KE6Ly0QXYzsb6:1735447023391'
@@ -151,9 +120,7 @@ function Config-Kiosk {
     if (-not (Test-Path $registryPath)) {
         New-Item -Path $registryPath -Force
     }
-    # $kioskIdValue = Read-Host -Prompt "Input KioskId"
     Set-ItemProperty -Path $registryPath -Name "KioskId" -Value $kioskIdValue -Type String
-    # $secretKeyValue = Read-Host -Prompt "Input SecretKey"
     Set-ItemProperty -Path $registryPath -Name "SecretKey" -Value $secretKeyValue -Type String
     if (Test-Path $registryPath) {
         Write-Host "Create config success!"
@@ -189,6 +156,8 @@ function Set-Vietnamese-Language {
 }
 
 function Disable-Window-Update {
+    $WindowsUpdatePath = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\"
+    $AutoUpdatePath    = "HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"    
     If(Test-Path -Path $WindowsUpdatePath) {
         Run-CommandWithLogging -Command "Remove-Item -Path $WindowsUpdatePath -Recurse"
     }
