@@ -82,7 +82,7 @@ function Download-Drive-Extract{
         @{
             Uri = 'https://drive.usercontent.google.com/download?id=1pfoMHmxmhXrrlSf6q644gJkiLNR6EY6e`&export=download`&authuser=0`&confirm=t`&uuid=2fa238c3-2580-4138-a10b-1cbe0bf4b398`&at=APvzH3ocBlokJHWpwZUEPm2T0R_d:1735448767165'
             FileName = 'Support_Exe.zip'
-            ExtractPath = "Support_Exe"
+            ExtractPath = "C:\KIOSKService"
         }
     )
 
@@ -126,7 +126,7 @@ function Execute{
         # },
         @{
             Path = "C:\KIOSKService\MediPay_Updater\AutoUpgradeApp.exe"
-            NoNewWindow = $true
+            NoNewWindow = $false
             WindowStyle = "Hidden"
         },
         @{
@@ -145,7 +145,6 @@ function Execute{
         }
     }
 }
-
 
 function Config-Kiosk {
     $registryPath = "HKLM:\SOFTWARE\MediPay"
@@ -235,7 +234,6 @@ function Disable-Screen-Edge-Swipe {
     taskkill /f /im explorer.exe
     start explorer.exe
 }
-
 
 #@ Call the functions
 Download-Drive-Extract
