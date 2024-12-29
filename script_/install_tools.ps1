@@ -125,14 +125,14 @@ function Execute{
         #     WindowStyle = "Normal"
         # },
         @{
-            Path = "C:\KIOSKService\MediPay_Updater\AutoUpgradeApp.exe"
-            NoNewWindow = $false
-            WindowStyle = "Hidden"
-        },
-        @{
             Path = "C:\KIOSKService\Support_Exe\VC_redist.x64.exe"
             NoNewWindow = $false
             WindowStyle = "Normal"
+        },
+        @{
+            Path = "C:\KIOSKService\MediPay_Updater\AutoUpgradeApp.exe"
+            NoNewWindow = $false
+            WindowStyle = "Hidden"
         }
     )
 
@@ -151,9 +151,9 @@ function Config-Kiosk {
     if (-not (Test-Path $registryPath)) {
         New-Item -Path $registryPath -Force
     }
-    $kioskIdValue = Read-Host -Prompt "Input KioskId"
+    # $kioskIdValue = Read-Host -Prompt "Input KioskId"
     Set-ItemProperty -Path $registryPath -Name "KioskId" -Value $kioskIdValue -Type String
-    $secretKeyValue = Read-Host -Prompt "Input SecretKey"
+    # $secretKeyValue = Read-Host -Prompt "Input SecretKey"
     Set-ItemProperty -Path $registryPath -Name "SecretKey" -Value $secretKeyValue -Type String
     if (Test-Path $registryPath) {
         Write-Host "Create config success!"
@@ -231,6 +231,9 @@ function Disable-Window-Installer {
 function Disable-Screen-Edge-Swipe {
     Write-Output_ "Disable Screen Edge Swipe."
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EdgeUI" /v AllowEdgeSwipe /t REG_DWORD /d 0 /f
+}
+
+function Restart-Explorer{
     taskkill /f /im explorer.exe
     start explorer.exe
 }
@@ -244,3 +247,4 @@ Disable-Window-Installer
 Disable-Screen-Edge-Swipe 
 Hide-Taskbar
 Set-Vietnamese-Language
+Restart-Explorer
