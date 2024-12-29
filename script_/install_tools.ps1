@@ -7,6 +7,7 @@ $MEDIPAY_FOLDER_PATH = "C:\KIOSKService\Medipay"
 
 New-Item -Path $API_FOLDER_PATH -ItemType Directory -Force
 New-Item -Path $MEDIPAY_FOLDER_PATH -ItemType Directory -Force
+$ProgressPreference = 'SilentlyContinue'
 
 #> Run-CommandWithLogging -Command "Get-Process" 
 function Run-CommandWithLogging {
@@ -141,6 +142,8 @@ function Hide-Taskbar {
 }
 
 function Set-Vietnamese-Language {
+    Write-Output_ "Set Vietnamese Language."
+    $ProgressPreference = 'SilentlyContinue'
     Run-CommandWithLogging -Command "Install-Language -Language vi-VN"
 
     Run-CommandWithLogging -Command "Set-WinUILanguageOverride -Language vi-VN"
