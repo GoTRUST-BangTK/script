@@ -1,9 +1,9 @@
  # $($args[0])"
  
 $LogFilePath = "c:\install_apps.log"
-$KIOSK_SERVICE_PATH = "C:\KIOSKService"
-$API_FOLDER_PATH = "C:\KIOSKService\API"
-$MEDIPAY_FOLDER_PATH = "C:\KIOSKService\Medipay"
+$KIOSK_SERVICE_PATH = "C:\KioskService"
+$API_FOLDER_PATH = "C:\KioskService\API"
+$MEDIPAY_FOLDER_PATH = "C:\KioskService\Medipay"
 
 New-Item -Path $API_FOLDER_PATH -ItemType Directory -Force
 New-Item -Path $MEDIPAY_FOLDER_PATH -ItemType Directory -Force
@@ -67,6 +67,7 @@ function Download-Drive-Extract{
         Run-CommandWithLogging -Command "Remove-Item -Path $fileName -Force"
         Write-Output_ "File $fileName downloaded and extracted successfully to $extractPath"
     }
+
     if (Test-Path -Path "$API_FOLDER_PATH\API_HN212") {
         Get-ChildItem -Path "$API_FOLDER_PATH\API_HN212" -Recurse -Force |
             Move-Item -Destination $API_FOLDER_PATH -Force
@@ -83,7 +84,7 @@ function Download-Drive-Extract{
     }
 }
 
-Run-CommandWithLogging -Command "w32tm /resync" 
+# Run-CommandWithLogging -Command "w32tm /resync" 
 
 function Execute{
     $executables = @(
