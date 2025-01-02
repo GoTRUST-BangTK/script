@@ -45,7 +45,7 @@ function Download-Drive-Extract{
             ExtractPath = "C:\KIOSKService\Medipay"
         },
         @{
-            Uri = 'https://drive.usercontent.google.com/download?id=1BvxFA_QOhX07JPHMnqC3UmJy-8rq6XIf`&export=download`&authuser=0`&confirm=t`&uuid=6cdcc5fe-2cb0-420b-b372-3b138fe16672`&at=APvzH3oOVSYIeS3kmowrYwovFh97:1735448764680'
+            Uri = 'https://drive.usercontent.google.com/download?id=1EF-JzNdhv7z4UfQvPDc-8SESL9N8B0vc`&export=download`&authuser=0`&confirm=t`&uuid=1f8ecb7d-3317-40c8-bbb0-751b24f1d1e6`&at=APvzH3oO1xQrVhe5a7WBAUi8R6Ge:1735783452251'
             FileName = 'MediPay_Updater.zip'
             ExtractPath = 'C:\KIOSKService'
         },
