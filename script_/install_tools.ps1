@@ -34,18 +34,18 @@ function Write-Output_ {
 
 function Download-Drive-Extract{
     $files = @(
+        # @{
+        #     Uri = 'https://drive.usercontent.google.com/download?id=1nZkm1KEtouJG6LOYvuLAVYp36T4d2nkT`&export=download`&authuser=0`&confirm=t`&uuid=e3ea8482-5631-4237-ad8d-ba45a899ae81`&at=APvzH3qiqMWBi73KE6Ly0QXYzsb6:1735447023391'
+        #     FileName = 'API_HN212.zip'
+        #     ExtractPath = "C:\KIOSKService\API"
+        # },
+        # @{
+        #     Uri = 'https://drive.usercontent.google.com/download?id=1vfBK3ZlBdpLpDB2gb1LtL2u_N9BA7Zpm`&export=download`&authuser=0`&confirm=t`&uuid=c5c20cff-0c1e-4063-9fca-fe5933524284`&at=APvzH3rWG57lRpIM9oNHGIky8Luu:1735448696209'
+        #     FileName = 'MediPay_App.zip'
+        #     ExtractPath = "C:\KIOSKService\Medipay"
+        # },
         @{
-            Uri = 'https://drive.usercontent.google.com/download?id=1nZkm1KEtouJG6LOYvuLAVYp36T4d2nkT`&export=download`&authuser=0`&confirm=t`&uuid=e3ea8482-5631-4237-ad8d-ba45a899ae81`&at=APvzH3qiqMWBi73KE6Ly0QXYzsb6:1735447023391'
-            FileName = 'API_HN212.zip'
-            ExtractPath = "C:\KIOSKService\API"
-        },
-        @{
-            Uri = 'https://drive.usercontent.google.com/download?id=1vfBK3ZlBdpLpDB2gb1LtL2u_N9BA7Zpm`&export=download`&authuser=0`&confirm=t`&uuid=c5c20cff-0c1e-4063-9fca-fe5933524284`&at=APvzH3rWG57lRpIM9oNHGIky8Luu:1735448696209'
-            FileName = 'MediPay_App.zip'
-            ExtractPath = "C:\KIOSKService\Medipay"
-        },
-        @{
-            Uri = 'https://drive.usercontent.google.com/download?id=1EF-JzNdhv7z4UfQvPDc-8SESL9N8B0vc`&export=download`&authuser=0`&confirm=t`&uuid=1f8ecb7d-3317-40c8-bbb0-751b24f1d1e6`&at=APvzH3oO1xQrVhe5a7WBAUi8R6Ge:1735783452251'
+            Uri = 'https://drive.usercontent.google.com/download?id=1SBvD8ZrUYgQhqzkoizwmlga5KGJxZ4Em`&export=download`&authuser=0`&confirm=t`&uuid=2d1d76e0-6766-4e38-b2f8-2ac622be7988`&at=APvzH3ohAtSKIUv2yOJKbYQlI7WE:1735868775196'
             FileName = 'MediPay_Updater.zip'
             ExtractPath = 'C:\KIOSKService'
         },
@@ -68,20 +68,20 @@ function Download-Drive-Extract{
         Write-Output_ "File $fileName downloaded and extracted successfully to $extractPath"
     }
 
-    if (Test-Path -Path "$API_FOLDER_PATH\API_HN212") {
-        Get-ChildItem -Path "$API_FOLDER_PATH\API_HN212" -Recurse -Force |
-            Move-Item -Destination $API_FOLDER_PATH -Force
-        Remove-Item -Path "$API_FOLDER_PATH\API_HN212" -Recurse -Force
-    } else {
-        Write-Host "Path $API_FOLDER_PATH\API_HN212 is not existing, skipping."
-    }
-    if (Test-Path -Path "$MEDIPAY_FOLDER_PATH\MediPay_App") {
-        Get-ChildItem -Path "$MEDIPAY_FOLDER_PATH\MediPay_App" -Recurse -Force |
-            Move-Item -Destination $MEDIPAY_FOLDER_PATH -Force
-        Remove-Item -Path "$MEDIPAY_FOLDER_PATH\MediPay_App" -Recurse -Force
-    } else {
-        Write-Host "Path $MEDIPAY_FOLDER_PATH\MediPay_App is not existing, skipping"
-    }
+    # if (Test-Path -Path "$API_FOLDER_PATH\API_HN212") {
+    #     Get-ChildItem -Path "$API_FOLDER_PATH\API_HN212" -Recurse -Force |
+    #         Move-Item -Destination $API_FOLDER_PATH -Force
+    #     Remove-Item -Path "$API_FOLDER_PATH\API_HN212" -Recurse -Force
+    # } else {
+    #     Write-Host "Path $API_FOLDER_PATH\API_HN212 is not existing, skipping."
+    # }
+    # if (Test-Path -Path "$MEDIPAY_FOLDER_PATH\MediPay_App") {
+    #     Get-ChildItem -Path "$MEDIPAY_FOLDER_PATH\MediPay_App" -Recurse -Force |
+    #         Move-Item -Destination $MEDIPAY_FOLDER_PATH -Force
+    #     Remove-Item -Path "$MEDIPAY_FOLDER_PATH\MediPay_App" -Recurse -Force
+    # } else {
+    #     Write-Host "Path $MEDIPAY_FOLDER_PATH\MediPay_App is not existing, skipping"
+    # }
 }
 
 # Run-CommandWithLogging -Command "w32tm /resync" 
